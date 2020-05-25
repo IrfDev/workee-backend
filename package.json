@@ -1,0 +1,38 @@
+{
+    "name": "workee-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "db-init": "sequelize init"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/IrfDev/workee-backend.git"
+    },
+    "keywords": [],
+    "author": "IrfDev",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/IrfDev/workee-backend/issues"
+    },
+    "homepage": "https://github.com/IrfDev/workee-backend#readme",
+    "dependencies": {
+        "@aws/dynamodb-data-mapper": "^0.7.3",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "nodemon": "^2.0.4",
+        "pg": "^8.2.1",
+        "pg-hstore": "^2.3.3",
+        "sequelize": "^5.21.10",
+        "sequelize-cli": "^5.5.1",
+        "serverless": "^1.71.3"
+    },
+    "devDependencies": {
+        "babel-eslint": "^10.1.0",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-react": "^7.20.0"
+    }
+}
