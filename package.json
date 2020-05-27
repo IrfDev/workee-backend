@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "db-init": "sequelize init"
+        "dev": "nodemon index.js "
     },
     "repository": {
         "type": "git",
@@ -19,20 +19,19 @@
     },
     "homepage": "https://github.com/IrfDev/workee-backend#readme",
     "dependencies": {
-        "@aws/dynamodb-data-mapper": "^0.7.3",
+        "@microsoft/microsoft-graph-client": "^2.0.0",
+        "aws-sdk": "^2.683.0",
+        "axios": "^0.19.2",
         "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "dynamoose": "^2.2.1",
         "express": "^4.17.1",
+        "github-repositories": "^4.0.0",
         "nodemon": "^2.0.4",
-        "pg": "^8.2.1",
-        "pg-hstore": "^2.3.3",
-        "sequelize": "^5.21.10",
-        "sequelize-cli": "^5.5.1",
-        "serverless": "^1.71.3"
+        "serverless": "^1.71.3",
+        "trello": "^0.10.0"
     },
     "devDependencies": {
-        "babel-eslint": "^10.1.0",
-        "eslint-plugin-import": "^2.20.2",
-        "eslint-plugin-jsx-a11y": "^6.2.3",
-        "eslint-plugin-react": "^7.20.0"
+        "eslint-plugin-import": "^2.20.2"
     }
 }
