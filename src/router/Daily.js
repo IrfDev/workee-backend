@@ -61,5 +61,4 @@ router.post('/', async(req, res) => {
     }
 });
 
-console.log(router);
 module.exports = router;

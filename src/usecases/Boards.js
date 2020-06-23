@@ -1,7 +1,5 @@
 const boardModel = require('../Models/Board');
 
-console.log(boardModel);
-
 function getAll() {
     return boardModel.query().all();
 }

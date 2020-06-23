@@ -22,13 +22,18 @@
         "@microsoft/microsoft-graph-client": "^2.0.0",
         "aws-sdk": "^2.683.0",
         "axios": "^0.19.2",
+        "cookie-parser": "^1.4.5",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "dynamoose": "^2.2.1",
         "express": "^4.17.1",
+        "express-session": "^1.17.1",
         "github-repositories": "^4.0.0",
         "nodemon": "^2.0.4",
+        "passport": "^0.4.1",
+        "passport-azure-ad": "^4.2.1",
         "serverless": "^1.71.3",
+        "simple-oauth2": "^3.4.0",
         "trello": "^0.10.0"
     },
     "devDependencies": {

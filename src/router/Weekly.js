@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const trello = require('../Lib/trello');
 const boardUseCase = require('../usecases/Boards');
+const { TRELLO_MEMBER_ID } = process.env;
 
 const router = express.Router();
 
@@ -30,9 +32,9 @@ router.get('/boards', async(req, res) => {
         });
     }
 });
-router.get('/trello-boards', async(req, res) => {
+router.get('/trello', async(req, res) => {
     try {
-        const trelloBoards = await trello.getBoards();
+        const trelloBoards = await trello.getBoards(TRELLO_MEMBER_ID);
         res.json({
             success: true,
             message: 'Boards from trello',
