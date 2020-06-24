@@ -4,6 +4,8 @@ const ProjectSchema = new dynamoose.Schema({
     title: {
         type: String,
         required: true,
+        hashKey: true,
+        index: true,
         validate: (val) => val > 0 < 15,
     },
     description: {
@@ -61,4 +63,4 @@ const ProjectSchema = new dynamoose.Schema({
         },
     },
 });
-module.exports = dynamoose.model('Project', ProjectSchema);
+module.exports = dynamoose.model('Project', ProjectSchema, { update: true });

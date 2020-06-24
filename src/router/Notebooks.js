@@ -5,23 +5,22 @@ const router = express.Router();
 
 router.get('/', async(req, res) => {
     try {
-        const clients = await graph.getUserDetails(req.user.accessToken);
-        console.log('hey buddy!', clients);
-        const notebooks = await graph.getNotebooks(req.user.accessToken);
-        console.log('Notebooks', notebooks);
+        const notebooks = await graph.getNotebooks(
+            req.user.oauthToken.token.access_token,
+        );
 
         res.json({
             success: true,
             message: 'All projects',
             data: {
-                notebooks: notebooks,
+                notebooks,
             },
         });
     } catch (error) {
         res.json({
             success: false,
             message: 'Failed to fetch projects',
-            error: error.message,
+            error: error,
         });
     }
 });

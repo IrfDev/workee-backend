@@ -16,19 +16,15 @@ module.exports = {
     getEvents: async function(accessToken) {
         const client = getAuthenticatedClient(accessToken);
 
-        const events = await client
-            .api('/me/events')
-            .select('subject,organizer,start,end')
-            .orderby('createdDateTime DESC')
-            .get();
+        const events = await client.api('/me/events').get();
 
         return events;
     },
 
-    getNotebooks: async(accessToken) => {
+    getNotebooks: async function(accessToken) {
         const client = getAuthenticatedClient(accessToken);
-
         const notebooks = await client.api('/me/onenote/notebooks').get();
+        console.log('Notebooks usecases', notebooks);
 
         return notebooks;
     },
