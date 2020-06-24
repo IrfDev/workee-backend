@@ -1,3 +1,4 @@
+require('dotenv').config();
 module.exports = require('simple-oauth2').create({
     client: {
         id: process.env.OAUTH_APP_ID,

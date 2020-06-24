@@ -6,7 +6,7 @@ const { TRELLO_MEMBER_ID } = process.env;
 
 const router = express.Router();
 
-router.get('/boards', async(req, res) => {
+router.post('/boards', async(req, res) => {
     try {
         const resourceIds = req.body;
         const boards = await resourceIds.map((id) => {
@@ -32,6 +32,7 @@ router.get('/boards', async(req, res) => {
         });
     }
 });
+
 router.get('/trello', async(req, res) => {
     try {
         const trelloBoards = await trello.getBoards(TRELLO_MEMBER_ID);
@@ -57,7 +58,7 @@ router.post('/', async(req, res) => {
         const newBoard = await boardUseCase.create(newBoardInfo);
         res.json({
             success: true,
-            message: 'All projects',
+            message: 'New Board created',
             data: {
                 newBoard,
             },

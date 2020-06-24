@@ -2,11 +2,11 @@ module.exports = {
     getAccessToken: async function(req) {
         if (req.user) {
             // Get the stored token
-            var storedToken = req.user.oauthToken;
+            var storedToken = req.user.oauthToken.token;
 
             if (storedToken) {
-                if (storedToken.expired()) {
-                    // refresh token
+                if (storedToken.accessToken.expired()) {
+                    // refresh xwtoken
                     var newToken = await storedToken.refresh();
 
                     // Update stored token
