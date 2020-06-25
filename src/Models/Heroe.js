@@ -1,20 +1,18 @@
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const HeroeSchema = new dynamoose.Schema({
+const HeroeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
-    tags: {
-        type: Array,
+    tags: [{
+        type: String,
         required: true,
-    },
-    links: {
-        type: Array,
-        schema: {
-            site: String,
-            url: String,
-        },
-    },
+    }, ],
+    links: [{
+        website: String,
+        urlLink: String,
+    }, ],
 });
-module.exports = dynamoose.model('Heroe', HeroeSchema);
+module.exports = mongoose.model('Heroe', HeroeSchema);

@@ -1,13 +1,17 @@
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const boardSchema = new dynamoose.Schema({
+const boardSchema = new mongoose.Schema({
     resourceid: {
         type: String,
         required: true,
     },
-    tags: {
-        type: Array,
+    activeList: {
+        type: String,
         required: true,
     },
+    tags: [{
+        type: String,
+        required: true,
+    }, ],
 });
-module.exports = dynamoose.model('Board', boardSchema);
+module.exports = mongoose.model('Board', boardSchema);

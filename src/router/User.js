@@ -22,25 +22,25 @@ router.post('/login', async(req, res) => {
     }
 });
 
-router.post('/', async(req, res) => {
-    try {
-        const user = req.body;
-        const hash = await bcrypt.hash(user.password);
-        const newUser = await User.create({ email: user.email, password: hash });
-        res.json({
-            success: true,
-            message: 'User created succesfully',
-            data: {
-                newUser,
-            },
-        });
-    } catch (error) {
-        res.json({
-            success: false,
-            message: 'Failed creating a new task',
-            error: error.message,
-        });
-    }
-});
+// router.post('/', async(req, res) => {
+//     try {
+//         const user = req.body;
+//         const hash = await bcrypt.hash(user.password);
+//         const newUser = await User.create({ email: user.email, password: hash });
+//         res.json({
+//             success: true,
+//             message: 'User created succesfully',
+//             data: {
+//                 newUser,
+//             },
+//         });
+//     } catch (error) {
+//         res.json({
+//             success: false,
+//             message: 'Failed creating a new task',
+//             error: error.message,
+//         });
+//     }
+// });
 
 module.exports = router;

@@ -6,22 +6,18 @@ const { TRELLO_MEMBER_ID } = process.env;
 
 const router = express.Router();
 
-router.post('/boards', async(req, res) => {
+router.get('/trello/lists/:boardId', async(req, res) => {
     try {
-        const resourceIds = req.body;
-        const boards = await resourceIds.map((id) => {
-            const boardData = boardUseCase.getById(id);
-            const trelloBoardData = trello.getCardsOnBoard(id);
-            return {
-                ...boardData,
-                trello: trelloBoardData,
-            };
-        });
+        const resourceId = req.params.boardId;
+        // const boardData = boardUseCase.getById(resourceId);
+        // const trelloBoardData = await trello.getCardsOnBoard(resourceId);
+        const trelloLists = await trello.getListsOnBoard(resourceId);
         res.json({
             success: true,
             message: 'Board by project id',
             data: {
-                boards,
+                // board: boardData,
+                lists: trelloLists,
             },
         });
     } catch (error) {
@@ -33,7 +29,30 @@ router.post('/boards', async(req, res) => {
     }
 });
 
-router.get('/trello', async(req, res) => {
+router.get('/trello/cards/:listId', async(req, res) => {
+    try {
+        const resourceId = req.params.listId;
+        // const boardData = boardUseCase.getById(resourceId);
+        // const trelloBoardData = await trello.getCardsOnBoard(resourceId);
+        const trelloCardsFromList = await trello.getCardsOnList(resourceId);
+        res.json({
+            success: true,
+            message: 'Board by project id',
+            data: {
+                // board: boardData,
+                cards: trelloCardsFromList,
+            },
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: 'Failed to fetch weekly boards',
+            error: error.message,
+        });
+    }
+});
+
+router.get('/trello/boards', async(req, res) => {
     try {
         const trelloBoards = await trello.getBoards(TRELLO_MEMBER_ID);
         res.json({

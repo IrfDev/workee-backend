@@ -22,9 +22,50 @@ router.get('/', async(req, res) => {
     }
 });
 
-router.patch('/:name', async(req, res) => {
+router.patch('/tasks/todo/:name', async(req, res) => {
     try {
-        const updatedTask = await taskUseCase.updatetask(req.params.name, req.body);
+        const updatedTask = await taskUseCase.updateTaskfromTodo(
+            req.params.name,
+            req.body.data,
+        );
+        res.json({
+            success: true,
+            message: `task updated ${req.params.name}`,
+            data: {
+                updatedTask,
+            },
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: `Failed to update task ${req.params.name}`,
+            error: error.message,
+        });
+    }
+});
+
+router.delete('/tasks/:id/:tagName', async(req, res) => {
+    const tagName = req.params.tagName;
+    const taskId = req.params.id;
+
+    try {
+        const deletedTag = await taskUseCase.deleteTag(taskId, tagName);
+        res.json({
+            success: true,
+            message: `tag deleted ${req.params.tagName} from ${taskId}`,
+            data: {
+                deletedTag,
+            },
+        });
+    } catch (error) {}
+});
+
+router.patch('/tasks/manual/:id', async(req, res) => {
+    try {
+        const updatedTask = await taskUseCase.updateTask(
+            req.params.id,
+            req.body.data,
+        );
         res.json({
             success: true,
             message: `task updated ${req.params.name}`,

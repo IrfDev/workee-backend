@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const dynamodb = require('./src/Lib/aws');
+const dbConnect = require('./src/Lib/db');
 const server = require('./src/server');
 
 const listenServer = function() {
@@ -12,8 +12,8 @@ const listenServer = function() {
 };
 
 async function main() {
-    await dynamodb;
-    console.log('DynamoDB on', dynamodb.endpoint.host);
+    await dbConnect();
+    console.log('MongoDB connected');
     await listenServer();
     console.log(`SERVER LISTENING ON PORT ${process.env.PORT}`);
 }

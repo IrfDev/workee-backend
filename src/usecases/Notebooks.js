@@ -1,11 +1,11 @@
 const notebookModel = require('../Models/Notebook');
 
 function getAll() {
-    return notebookModel.query().all();
+    return notebookModel.find();
 }
 
 function getById(id) {
-    return notebookModel.query({ resourceId: id });
+    return notebookModel.findOne({ resourceId: id });
 }
 
 function create(newnotebook) {
@@ -13,12 +13,22 @@ function create(newnotebook) {
 }
 
 function updateNotebook(name, object) {
-    return notebookModel.update({ resourceid: name }, object);
+    return notebookModel.findAndUpdate({ resourceid: name }, object);
+}
+
+function pullFromNotebook(resourceId, object) {
+    return notebookModel.findAndUpdate(resourceid, { $pull: object });
+}
+
+function pushFromNotebook(resourceId, object) {
+    return notebookModel.findAndUpdate(resourceid, { $push: object });
 }
 
 module.exports = {
     getAll,
     create,
     getById,
+    pushFromNotebook,
     updateNotebook,
+    pullFromNotebook,
 };

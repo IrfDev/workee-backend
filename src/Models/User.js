@@ -1,15 +1,13 @@
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const TaskSchema = new dynamoose.Schema({
+const TaskSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        rangeKey: true,
-        index: true,
     },
     password: {
         type: String,
         required: true,
     },
 });
-module.exports = dynamoose.model('User', TaskSchema);
+module.exports = mongoose.model('User', TaskSchema);

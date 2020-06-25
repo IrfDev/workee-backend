@@ -1,12 +1,12 @@
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const RepoSchema = new dynamoose.Schema({
+const RepoSchema = new mongoose.Schema({
     githubid: {
         type: String,
     },
-    technologies: {
-        type: Array,
+    technologies: [{
+        type: String,
         required: true,
-    },
+    }, ],
 });
-module.exports = dynamoose.model('Repo', RepoSchema);
+module.exports = mongoose.model('Repo', RepoSchema);
