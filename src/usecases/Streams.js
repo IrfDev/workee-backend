@@ -42,7 +42,15 @@ function create(newstream) {
 }
 
 function updateStream(name, object) {
-    return streamModel.update({ resourcesid: name }, object);
+    return streamModel.findAndUpdate({ resourcesid: name }, object);
+}
+
+function pullFromStream(streamId, tag) {
+    return streamModel.findAndUpdate(streamId, { $pull: { tags: tag } });
+}
+
+function pushFromStream(streamId, tag) {
+    return streamModel.findAndUpdate(streamId, { $push: { tags: tag } });
 }
 
 module.exports = {
@@ -50,4 +58,6 @@ module.exports = {
     create,
     getById,
     updateStream,
+    pullFromStream,
+    pushFromStream,
 };

@@ -1,7 +1,7 @@
 const projectModel = require('../Models/Project');
 
 async function getAll() {
-    return projectModel.scan().exec();
+    return projectModel.find();
 }
 
 function create(newProject) {
@@ -10,11 +10,23 @@ function create(newProject) {
 
 function updateProject(name, object) {
     const updatedObject = object;
-    return projectModel.update({ title: name }, { $ADD: updatedObject });
+    return projectModel.findOneAndUpdate({ title: name }, updatedObject);
+}
+
+function pushIds(name, object) {
+    const updatedObject = object;
+    return projectModel.findOneAndUpdate({ title: name }, { $push: updatedObject }, );
+}
+
+function pullIds(name, object) {
+    const updatedObject = object;
+    return projectModel.findOneAndUpdate({ title: name }, { $pull: updatedObject }, );
 }
 
 module.exports = {
     getAll,
     create,
     updateProject,
+    pushIds,
+    pullIds,
 };

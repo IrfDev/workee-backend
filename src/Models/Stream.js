@@ -1,6 +1,6 @@
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const streamFeedlySchema = new dynamoose.Schema({
+const streamFeedlySchema = new mongoose.Schema({
     streamId: {
         type: String,
         required: true,
@@ -9,9 +9,9 @@ const streamFeedlySchema = new dynamoose.Schema({
         type: String,
         required: true,
     },
-    tags: {
+    tags: [{
         type: Array,
         required: true,
-    },
+    }, ],
 });
-module.exports = dynamoose.model('Stream', streamFeedlySchema);
+module.exports = mongoose.model('Stream', streamFeedlySchema);

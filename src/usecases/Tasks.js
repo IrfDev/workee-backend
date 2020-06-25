@@ -1,19 +1,31 @@
 const taskModel = require('../Models/Tasks');
 
 function getAll() {
-    return taskModel.query().all();
+    return taskModel.find();
 }
 
 function getById(id) {
-    return taskModel.query({ resourceid: id });
+    return taskModel.findById(id);
 }
 
 function create(newtask) {
     return taskModel.create(newtask);
 }
 
-function updateTask(name, object) {
-    return taskModel.update({ title: name }, object);
+function updateTaskfromTodo(reseourceId, object) {
+    return taskModel.findAndUpdate(reseourceId, object);
+}
+
+function deleteTag(id, tag) {
+    return taskModel.findByIdAndUpdate(id, { $push: { tags: tag } });
+}
+
+function pushTag(id, tag) {
+    return taskModel.findByIdAndUpdate(id, { $pull: { tags: tag } });
+}
+
+function updateTask(id, object) {
+    return taskModel.findByIdAndUpdate(id, object);
 }
 
 module.exports = {
@@ -21,4 +33,8 @@ module.exports = {
     create,
     getById,
     updateTask,
+
+    deleteTag,
+    updateTaskfromTodo,
+    pushTag,
 };

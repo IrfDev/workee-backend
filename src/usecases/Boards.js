@@ -1,24 +1,33 @@
 const boardModel = require('../Models/Board');
 
 function getAll() {
-    return boardModel.query().all();
+    return boardModel.find();
 }
 
 function getById(id) {
-    return boardModel.query({ resourceid: id });
+    return boardModel.findOne({ resourceid: id });
 }
 
 function create(newboard) {
     return boardModel.create(newboard);
 }
 
-function updateBoard(name, object) {
-    return boardModel.update({ resourceid: name }, object);
+function updateBoard(resourceid, object) {
+    return boardModel.findAndUpdate(resourceid, object);
 }
 
+function pushTagsInBoard(resourceid, tags) {
+    return boardModel.findAndUpdate(resourceid, { $push: tags });
+}
+
+function pullTagsInBoard(resourceid, tags) {
+    return boardModel.findOneAndUpdate(resourceid, { $pullAll: { tags } });
+}
 module.exports = {
     getAll,
     create,
     getById,
     updateBoard,
+    pushTagsInBoard,
+    pullTagsInBoard,
 };

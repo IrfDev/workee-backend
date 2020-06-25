@@ -44,6 +44,28 @@ router.patch('/:name', async(req, res) => {
     }
 });
 
+router.patch('/push/:name', async(req, res) => {
+    try {
+        const updatedProject = await projectUseCase.pushIds(
+            req.params.name,
+            req.body,
+        );
+        res.json({
+            success: true,
+            message: `Project updated ${req.params.name}`,
+            data: {
+                updatedProject,
+            },
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: `Failed to update project ${req.params.name}`,
+            error: error.message,
+        });
+    }
+});
+
 router.post('/', async(req, res) => {
     try {
         const newProjectData = req.body;

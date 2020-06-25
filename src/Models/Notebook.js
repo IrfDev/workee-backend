@@ -1,10 +1,13 @@
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const notebookSchema = new dynamoose.Schema({
+const notebookSchema = new mongoose.Schema({
     onenoteId: {
         type: String,
         required: true,
     },
+    sections: [{
+        type: String,
+    }, ],
     tags: {
         type: Array,
         required: true,
@@ -14,4 +17,4 @@ const notebookSchema = new dynamoose.Schema({
         required: true,
     },
 });
-module.exports = dynamoose.model('Notebook', notebookSchema);
+module.exports = mongoose.model('Notebook', notebookSchema);

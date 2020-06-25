@@ -1,13 +1,16 @@
-const dynamoose = require('dynamoose');
+const mongoose = require('mongoose');
 
-const TaskSchema = new dynamoose.Schema({
-    resourceid: {
+const TaskSchema = new mongoose.Schema({
+    resource: {
+        type: [String, Object],
+        required: true,
+    },
+    tags: [{
         type: String,
         required: true,
-    },
-    tags: {
-        type: Array,
-        required: true,
+    }, ],
+    type: {
+        enum: ['todo', 'manual'],
     },
 });
-module.exports = dynamoose.model('Task', TaskSchema);
+module.exports = mongoose.model('Task', TaskSchema);
