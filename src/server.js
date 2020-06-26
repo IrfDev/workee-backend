@@ -8,7 +8,10 @@ const passportSetup = require('./Lib/passport');
 
 const cookieParser = require('cookie-parser');
 
+const apolloServer = require('./GQL/server');
+
 const app = express();
+apolloServer.applyMiddleware({ app, path: '/graphql' });
 app.use(express.urlencoded({ extended: false }));
 
 app.use(

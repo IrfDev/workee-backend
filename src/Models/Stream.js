@@ -5,10 +5,10 @@ const streamFeedlySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    feedlyStreamsid: {
+    feedlyStreamsid: [{
         type: String,
         required: true,
-    },
+    }, ],
     tags: [{
         type: Array,
         required: true,
