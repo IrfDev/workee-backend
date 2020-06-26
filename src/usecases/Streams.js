@@ -68,8 +68,6 @@ module.exports = {
     updateStream,
     pullFromStream,
     pushFromStream,
-    getFeeds,
-    getStreams,
     getFeedsFromFeedly,
     getStreamsFromFeedly,
 };

@@ -5,6 +5,11 @@ const resolvers = {
         getAllBoards: async() => await Board.getAll(),
         getBoardsById: async(_, __, { id }, ___) => await Board.getById(id),
         getBoardsByTag: async(_, __, { tags }, ___) => await Board.getByTag(tags),
+        getTrelloBoards: () => Board.getTrelloBoards,
+        getTrelloListsFromBoard: async(_, __, { boardId }, ___) =>
+            await Board.getTrelloListsFromBoard(boardId),
+        getTrelloCardsFromList: async(_, __, { listId }, ___) =>
+            await Board.getTrelloCardsFromList(listId),
     },
     Mutation: {
         updateBoard: async(_, __, { input }, ___) =>

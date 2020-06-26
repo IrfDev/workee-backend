@@ -12,6 +12,9 @@ const typeDefs = gql `
     getAllboards: [Board]
     getBoardById(id: ID!): Board
     getBoardsByTag(tags: TagsInput): [Board]
+    getTrelloBoards: Board
+    getTrelloListsFromBoard(boardId: ID!): Board
+    getTrelloCardsFromList(listId: ID!): Board
   }
 
   extend type Mutation {
