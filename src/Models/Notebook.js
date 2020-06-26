@@ -8,13 +8,13 @@ const notebookSchema = new mongoose.Schema({
     sections: [{
         type: String,
     }, ],
-    tags: {
-        type: Array,
+    tags: [{
+        type: String,
         required: true,
-    },
-    topics: {
-        type: Array,
+    }, ],
+    topics: [{
+        type: String,
         required: true,
-    },
+    }, ],
 });
 module.exports = mongoose.model('Notebook', notebookSchema);

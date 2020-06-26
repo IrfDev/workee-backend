@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const RepoSchema = new mongoose.Schema({
-    githubid: {
+    githubId: {
         type: String,
     },
     technologies: [{
