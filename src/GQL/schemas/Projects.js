@@ -5,7 +5,6 @@ const typeDefs = gql `
     title: String!
     description: String!
     thumb: String!
-    description: [String]
     weekly: Weekly
     daily: Daily
     sources: Sources
@@ -31,42 +30,33 @@ const typeDefs = gql `
     resources: [String]
   }
 
-  type Query {
+  extend type Query {
     getAllProjects: [Project]
-    projectById(id: ID!): Project
-    projectsByTag(tags: TagsInput): [Project]
+    getProjectById(id: ID!): Project
+    getProjectsByTags(tags: TagsInput): [Project]
   }
 
-  input TagsInput {
-    tags: [String!]
-  }
-
-  type Mutation {
+  extend type Mutation {
     updateProject(input: UpdateProjectInput): ProjectModifiedCreatedInput
     createProject(input: CreateProjectInput): ProjectModifiedCreatedInput
-  }
-
-  input UpdateProjectInput {
-    id: ID!
-    tags: [String]
+    pushInProject(input: UpdateProjectInput): ProjectModifiedCreatedInput
+    pullInProject(input: UpdateProjectInput): ProjectModifiedCreatedInput
   }
 
   input CreateProjectInput {
     title: String!
     description: String!
     thumb: String!
-    description: [String]
     weekly: WeeklyInput
     daily: DailyInput
     sources: SourcesInput
     resources: ResourcesInput
   }
   input UpdateProjectInput {
-    id: ID!
+    id: ID
     title: String
     description: String
     thumb: String
-    description: [String]
     weekly: WeeklyInput
     daily: DailyInput
     sources: SourcesInput

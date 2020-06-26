@@ -11,23 +11,23 @@ const typeDefs = gql `
     urlLink: String
   }
 
-  type Query {
-    heroes: [Heroe]
-    heroeById(id: ID!): Heroe
-    heroesByTag(tags: TagsInput): Heroe
+  extend type Query {
+    getAllHeroes: [Heroe]
+    getHeroeById(id: ID!): Heroe
+    getHeroesByTags(tags: [String]): [Heroe]
   }
 
-  input TagsInput {
-    tags: [String!]
-  }
-
-  type Mutation {
+  extend type Mutation {
     updateHeroe(input: UpdateHeroeInput): HeroeModifiedCreatedInput
     createHero(input: createHeroeInput): HeroeModifiedCreatedInput
+    pushTagsInHero(id: ID!, tags: [String!]): HeroeModifiedCreatedInput
+    pullTagsInHero(id: ID!, tags: [String!]): HeroeModifiedCreatedInput
   }
+
   input UpdateHeroeInput {
     id: ID!
     tags: [String]
+    links: [LinkInput]
   }
 
   input createHeroeInput {

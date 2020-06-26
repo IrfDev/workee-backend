@@ -12,19 +12,17 @@ const typeDefs = gql `
     urlLink: String
   }
 
-  type Query {
+  extend type Query {
     getAllResources: [Resource]
     resourceById(id: ID!): Resource
-    resourcesByTag(tags: TagsInput): [Resource]
+    resourcesByTags(tags: TagsInput): [Resource]
   }
 
-  input TagsInput {
-    tags: [String!]
-  }
-
-  type Mutation {
+  extend type Mutation {
     updateResource(input: UpdateResourceInput): ResourceModifiedCreatedInput
     createResource(input: CreateResourceInput): ResourceModifiedCreatedInput
+    pushFromResource(id: ID!, tags: [String!]): ResourceModifiedCreatedInput
+    pullFromResource(id: ID!, tags: [String!]): ResourceModifiedCreatedInput
   }
 
   input UpdateResourceInput {
@@ -39,7 +37,7 @@ const typeDefs = gql `
     website: WebsiteInput
   }
 
-  type WebsiteInput {
+  input WebsiteInput {
     site: String
     urlLink: String
   }

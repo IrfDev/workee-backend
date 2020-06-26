@@ -8,6 +8,10 @@ function getById(id) {
     return boardModel.findOne({ resourceid: id });
 }
 
+function getByTag(tag) {
+    return boardModel.find({ tags: tag });
+}
+
 function create(newboard) {
     return boardModel.create(newboard);
 }
@@ -30,4 +34,5 @@ module.exports = {
     updateBoard,
     pushTagsInBoard,
     pullTagsInBoard,
+    getByTag,
 };

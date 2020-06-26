@@ -6,7 +6,15 @@ const feedlyUrl = 'https://cloud.feedly.com/v3';
 //     Authorization: process.env.FEEDLY_TOKEN,
 // };
 
-async function getAll() {
+function getAll() {
+    return streamModel.find();
+}
+
+function getById(id) {
+    return streamModel.findById(id);
+}
+
+async function getFeedsFromFeedly() {
     try {
         const requestUrl = `${feedlyUrl}/collections`;
         const allStreamsResponse = await axios.get(requestUrl, {
@@ -21,7 +29,7 @@ async function getAll() {
     }
 }
 
-async function getById(id) {
+async function getStreamsFromFeedly(id) {
     try {
         const allEntities = await axios.get(`${feedlyUrl}/streams/contents`, {
             params: {
@@ -45,12 +53,12 @@ function updateStream(name, object) {
     return streamModel.findAndUpdate({ resourcesid: name }, object);
 }
 
-function pullFromStream(streamId, tag) {
-    return streamModel.findAndUpdate(streamId, { $pull: { tags: tag } });
+function pullFromStream(streamId, tags) {
+    return streamModel.findAndUpdate(streamId, { $pull: { tags } });
 }
 
-function pushFromStream(streamId, tag) {
-    return streamModel.findAndUpdate(streamId, { $push: { tags: tag } });
+function pushFromStream(streamId, tags) {
+    return streamModel.findAndUpdate(streamId, { $push: { tags } });
 }
 
 module.exports = {
@@ -60,4 +68,8 @@ module.exports = {
     updateStream,
     pullFromStream,
     pushFromStream,
+    getFeeds,
+    getStreams,
+    getFeedsFromFeedly,
+    getStreamsFromFeedly,
 };

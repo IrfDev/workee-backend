@@ -8,12 +8,16 @@ function getByName(name) {
     return heroModel.findOne({ name });
 }
 
+function getByTag(tags) {
+    return heroModel.findOne({ tags });
+}
+
 function create(newhero) {
     return heroModel.create(newhero);
 }
 
-function updatehero(name, object, method) {
-    return heroModel.findAndUpdate({ name }, object);
+function updatehero(id, object) {
+    return heroModel.findAndUpdate({ id }, object);
 }
 
 function pushTagsHero(name, object) {
@@ -32,6 +36,7 @@ module.exports = {
     getAll,
     create,
     pushTagsHero,
+    getByTag,
     getByName,
     updatehero,
     pullTagsHero,

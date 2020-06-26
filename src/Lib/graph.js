@@ -28,6 +28,15 @@ module.exports = {
 
         return notebooks;
     },
+    getSections: async function(accessToken, notebookId) {
+        const client = getAuthenticatedClient(accessToken);
+        const notebooks = await client
+            .api(`/me/onenote/notebooks/${notebookId}/sections`)
+            .get();
+        console.log('Notebooks usecases', notebooks);
+
+        return notebooks;
+    },
     // </GetEventsSnippet>
 };
 

@@ -7,19 +7,19 @@ const typeDefs = gql `
     tags: [String!]
   }
 
-  type Query {
+  extend type Query {
     getAllStreams: [Stream]
-    streamById(id: ID!): Stream
-    streamsByTag(tags: TagsInput): [Stream]
+    getStreamById(id: ID!): Stream
+    getStreamsByTag(tags: TagsInput): [Stream]
+    getFeedsFromFeedly: StreamModifiedCreatedInput
+    getStreamsFromFeedly(id: ID!): StreamModifiedCreatedInput
   }
 
-  input TagsInput {
-    tags: [String!]
-  }
-
-  type Mutation {
+  extend type Mutation {
     updateStream(input: UpdateStreamInput): StreamModifiedCreatedInput
     createStream(input: CreateStreamInput): StreamModifiedCreatedInput
+    pushFromStream(id: ID!, tags: [String!]): StreamModifiedCreatedInput
+    pullFromStream(id: ID!, tags: [String!]): StreamModifiedCreatedInput
   }
 
   input UpdateStreamInput {

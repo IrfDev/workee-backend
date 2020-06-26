@@ -1,4 +1,5 @@
 const repoModel = require('../Models/Repo');
+const { default: Axios } = require('axios');
 
 function getAll() {
     return repoModel.find();
@@ -6,6 +7,10 @@ function getAll() {
 
 function getById(id) {
     return repoModel.find({ resourceId: id });
+}
+
+function getByTechnology(technology) {
+    return repoModel.find({ technology });
 }
 
 function create(newrepo) {
@@ -28,6 +33,15 @@ function pushFromRepo(resourceId, object) {
     });
 }
 
+function getAllRepos() {
+    try {
+        const repos = Axios.get('https://api.github.com/users/irfdev/repos');
+        return repos.data.data;
+    } catch (error) {
+        return error;
+    }
+}
+
 module.exports = {
     getAll,
     create,
@@ -35,4 +49,6 @@ module.exports = {
     updateRepo,
     pullFromRepo,
     pushFromRepo,
+    getByTechnology,
+    getAllRepos,
 };

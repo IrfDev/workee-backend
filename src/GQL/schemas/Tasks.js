@@ -9,8 +9,8 @@ const typeDefs = gql `
 
   type Query {
     getAllTasks: [Task]
-    taskById(id: ID!): Task
-    tasksByTag(tags: TagsInput): Task
+    getTaskById(id: ID!): Task
+    getTasksByTag(tags: [String!]): Task
   }
 
   input TagsInput {
@@ -20,6 +20,8 @@ const typeDefs = gql `
   type Mutation {
     updateTask(input: UpdateTaskInput): TaskModifiedCreatedInput
     createTask(input: createTaskInput): TaskModifiedCreatedInput
+    pushFromTask(id: ID!, tags: [String!]): TaskModifiedCreatedInput
+    pullFromTask(id: ID!, tags: [String!]): TaskModifiedCreatedInput
   }
   input UpdateTaskInput {
     id: ID!

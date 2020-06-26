@@ -6,19 +6,22 @@ const typeDefs = gql `
     technologies: [String]
   }
 
-  type Query {
+  extend type Query {
     getAllRepos: [Repo]
-    repoById(id: ID!): Repo
-    reposByTechnology(technologies: TechnologiesInput): [Repo]
+    getRepoById(id: ID!): Repo
+    getReposByTechnology(technologies: TechnologiesInput): [Repo]
+    getAllGithubRepos: Repo
   }
 
   input TechnologiesInput {
     technologies: [String!]
   }
 
-  type Mutation {
+  extend type Mutation {
     updateRepo(input: UpdateRepoInput): RepoModifiedCreatedInput
     createRepo(input: createRepoInput): RepoModifiedCreatedInput
+    pushFromRepo(id: ID!, technologies: [String!]): RepoModifiedCreatedInput
+    pullFromRepo(id: ID!, technologies: [String!]): RepoModifiedCreatedInput
   }
   input UpdateRepoInput {
     id: ID!

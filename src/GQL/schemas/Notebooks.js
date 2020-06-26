@@ -8,20 +8,18 @@ const typeDefs = gql `
     topics: [String]
   }
 
-  type Query {
+  extend type Query {
     getAllNotebooks: [Notebook]
     getNotebookById(id: ID!): Notebook
     getNotebooksByTags(tags: TagsInput): [Notebook]
-  }
-  input TagsInput {
-    tags: [String!]
+    getNotebooksFromOnenote(token: String!): String
+    getSectionsFromOnenote(token: String!, notebookId: String!): String
   }
 
-  type Mutation {
+  extend type Mutation {
     updateNotebook(input: UpdateNotebookInput): NotebookUpdateResponsePayload
-    updateNotebookTags(
-      input: UpdateNotebookInput
-    ): NotebookUpdateResponsePayload
+    pullFromNotebook(input: UpdateNotebookInput): NotebookUpdateResponsePayload
+    pushFromNotebook(input: UpdateNotebookInput): NotebookUpdateResponsePayload
     createNotebook(input: CreateNotebookInput): NotebookCreatedResponsePayload
   }
 

@@ -8,19 +8,19 @@ const typeDefs = gql `
     id: ID
   }
 
-  type Query {
-    boards: [Board]
-    board(id: ID!): Board
-    boardsByTag(tags: TagsInput): [Board]
+  extend type Query {
+    getAllboards: [Board]
+    getBoardById(id: ID!): Board
+    getBoardsByTag(tags: TagsInput): [Board]
   }
 
-  type Mutation {
+  extend type Mutation {
     updateBoard(input: UpdateBoardInput): BoardUpdatedResponsePayloads
     createBoard(input: CreateBoardInput): BoardCreateResponsePayload
+    pushTagsInBoard(id: ID!, tags: [String!]): BoardCreateResponsePayload
+    pullTagsInBoard(id: ID!, tags: [String!]): BoardCreateResponsePayload
   }
-  input TagsInput {
-    tags: [String!]
-  }
+
   input UpdateBoardInput {
     id: ID!
     tags: [String]
