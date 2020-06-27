@@ -14,8 +14,8 @@ const typeDefs = gql `
 
   extend type Query {
     getAllResources: [Resource]
-    resourceById(id: ID!): Resource
-    resourcesByTags(tags: TagsInput): [Resource]
+    getResourceById(id: ID!): Resource
+    getResourcesByTags(tags: TagsInput): [Resource]
   }
 
   extend type Mutation {

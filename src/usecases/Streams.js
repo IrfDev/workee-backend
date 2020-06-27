@@ -14,6 +14,10 @@ function getById(id) {
     return streamModel.findById(id);
 }
 
+function getByTag(tags) {
+    return streamModel.find({ tags });
+}
+
 async function getFeedsFromFeedly() {
     try {
         const requestUrl = `${feedlyUrl}/collections`;
@@ -22,7 +26,6 @@ async function getFeedsFromFeedly() {
                 Authorization: process.env.FEEDLY_TOKEN,
             },
         });
-        console.log(allStreamsResponse);
         return allStreamsResponse.data;
     } catch (error) {
         return error.message;
@@ -49,16 +52,16 @@ function create(newstream) {
     return streamModel.create(newstream);
 }
 
-function updateStream(name, object) {
-    return streamModel.findAndUpdate({ resourcesid: name }, object);
+function updateStream(id, object) {
+    return streamModel.findByIdAndUpdate(id, object);
 }
 
-function pullFromStream(streamId, tags) {
-    return streamModel.findAndUpdate(streamId, { $pull: { tags } });
+function pullFromStream(id, object) {
+    return streamModel.findByIdAndUpdate(id, { $pull: object });
 }
 
-function pushFromStream(streamId, tags) {
-    return streamModel.findAndUpdate(streamId, { $push: { tags } });
+function pushFromStream(id, obje) {
+    return streamModel.findByIdAndUpdate(id, { $push: object });
 }
 
 module.exports = {
@@ -70,4 +73,5 @@ module.exports = {
     pushFromStream,
     getFeedsFromFeedly,
     getStreamsFromFeedly,
+    getByTag,
 };

@@ -1,10 +1,10 @@
 const Login = require('../../usecases/Login');
 
-const resolvers = {
+module.exports = {
     Mutation: {
-        getLogin: async(_, __, { email, password }) =>
-            Login.getLogin(email, password),
+        async getLogin(_, { input }) {
+            const jwt = await Login.getLogin(input.email, input.password);
+            return jwt;
+        },
     },
 };
-
-module.exports = resolvers;

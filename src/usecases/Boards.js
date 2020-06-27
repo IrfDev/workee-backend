@@ -1,12 +1,13 @@
 const boardModel = require('../Models/Board');
 const trello = require('../Lib/trello');
+const { TRELLO_MEMBER_ID } = process.env;
 
 function getAll() {
     return boardModel.find();
 }
 
 function getById(id) {
-    return boardModel.findOne({ resourceid: id });
+    return boardModel.findById(id);
 }
 
 function getByTag(tag) {
@@ -17,16 +18,16 @@ function create(newboard) {
     return boardModel.create(newboard);
 }
 
-function updateBoard(resourceid, object) {
-    return boardModel.findAndUpdate(resourceid, object);
+function updateBoard(id, object) {
+    return boardModel.findByIdAndUpdate(id, object);
 }
 
-function pushTagsInBoard(resourceid, tags) {
-    return boardModel.findAndUpdate(resourceid, { $push: tags });
+function pushTagsInBoard(id, tags) {
+    return boardModel.findByIdAndUpdate(id, { $push: { tags } });
 }
 
-function pullTagsInBoard(resourceid, tags) {
-    return boardModel.findOneAndUpdate(resourceid, { $pullAll: { tags } });
+function pullTagsFromBoard(id, tags) {
+    return boardModel.findByIdAndUpdate(id, { $pullAll: { tags } });
 }
 
 async function getTrelloBoards() {
@@ -61,7 +62,7 @@ module.exports = {
     getById,
     updateBoard,
     pushTagsInBoard,
-    pullTagsInBoard,
+    pullTagsFromBoard,
     getByTag,
     getTrelloBoards,
     getTrelloListsFromBoard,

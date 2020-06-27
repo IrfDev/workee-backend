@@ -6,37 +6,38 @@ function getAll() {
 }
 
 function getById(id) {
-    return repoModel.find({ resourceId: id });
+    return repoModel.findById(id);
 }
 
-function getByTechnology(technology) {
-    return repoModel.find({ technology });
+function getByTechnology(technologies) {
+    return repoModel.find({ technologies });
 }
 
 function create(newrepo) {
     return repoModel.create(newrepo);
 }
 
-function updateRepo(name, object) {
-    return repoModel.findAndUpdate({ resourceid: name }, object);
+function updateRepo(id, object) {
+    return repoModel.findByIdAndUpdate(id, object);
 }
 
-function pullFromRepo(resourceId, object) {
-    return repoModel.findAndUpdate(resourceId, {
+function pullFromRepo(id, object) {
+    return repoModel.findByIdAndUpdate(id, {
         $pull: { technologies: object },
     });
 }
 
-function pushFromRepo(resourceId, object) {
-    return repoModel.findAndUpdate(resourceId, {
+function pushFromRepo(id, object) {
+    return repoModel.findByIdAndUpdate(id, {
         $push: { technologies: object },
     });
 }
 
-function getAllRepos() {
+async function getAllRepos() {
     try {
-        const repos = Axios.get('https://api.github.com/users/irfdev/repos');
-        return repos.data.data;
+        const repos = await Axios.get('https://api.github.com/users/irfdev/repos');
+        console.log(repos);
+        return repos.data;
     } catch (error) {
         return error;
     }

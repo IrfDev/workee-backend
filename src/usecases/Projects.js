@@ -14,19 +14,19 @@ function create(newProject) {
     return projectModel.create(newProject);
 }
 
-function updateProject(name, object) {
+function updateProject(id, object) {
     const updatedObject = object;
-    return projectModel.findOneAndUpdate({ title: name }, updatedObject);
+    return projectModel.findByIdAndUpdate(id, updatedObject);
 }
 
-function pushIds(name, object) {
+function pushIds(id, object) {
     const updatedObject = object;
-    return projectModel.findOneAndUpdate({ title: name }, { $push: updatedObject }, );
+    return projectModel.findByIdAndUpdate(id, { $push: updatedObject });
 }
 
-function pullIds(name, object) {
+function pullIds(id, object) {
     const updatedObject = object;
-    return projectModel.findOneAndUpdate({ title: name }, { $pull: updatedObject }, );
+    return projectModel.findByIdAndUpdate(id, { $pull: updatedObject });
 }
 
 module.exports = {
@@ -36,4 +36,5 @@ module.exports = {
     pushIds,
     pullIds,
     getById,
+    getByTag,
 };

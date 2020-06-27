@@ -9,6 +9,7 @@ const typeDefs = gql `
     daily: Daily
     sources: Sources
     resources: Resources
+    id: ID!
   }
 
   type Weekly {
@@ -39,8 +40,15 @@ const typeDefs = gql `
   extend type Mutation {
     updateProject(input: UpdateProjectInput): ProjectModifiedCreatedInput
     createProject(input: CreateProjectInput): ProjectModifiedCreatedInput
-    pushInProject(input: UpdateProjectInput): ProjectModifiedCreatedInput
-    pullInProject(input: UpdateProjectInput): ProjectModifiedCreatedInput
+    pushInProject(
+      id: ID!
+      target: UpdateProjectInput
+    ): ProjectModifiedCreatedInput
+
+    pullInProject(
+      id: ID!
+      target: UpdateProjectInput
+    ): ProjectModifiedCreatedInput
   }
 
   input CreateProjectInput {

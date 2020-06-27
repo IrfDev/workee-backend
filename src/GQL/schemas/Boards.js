@@ -9,19 +9,66 @@ const typeDefs = gql `
   }
 
   extend type Query {
-    getAllboards: [Board]
+    getAllBoards: [Board]
     getBoardById(id: ID!): Board
-    getBoardsByTag(tags: TagsInput): [Board]
-    getTrelloBoards: Board
-    getTrelloListsFromBoard(boardId: ID!): Board
-    getTrelloCardsFromList(listId: ID!): Board
+    getBoardsByTag(tags: [String]): [Board]
+    getTrelloBoards: [TrelloBoardsPayload]
+    getTrelloListsFromBoard(boardId: ID!): [TrelloListPayload]
+    getTrelloCardsFromList(listId: ID!): [TrelloCardsPayload!]
+  }
+
+  type TrelloListPayload {
+    id: ID!
+    name: String!
+    idBoard: String!
+  }
+
+  type TrelloCardsPayload {
+    name: String!
+    idBoard: String!
+    desc: String!
+    idList: String!
+    shortUrl: String!
+    dueReminder: String
+    labels: LabelNames
+  }
+
+  type Cover {
+    color: String!
+    size: String
+  }
+
+  type TrelloBoardsPayload {
+    name: String!
+    desc: String!
+    prefs: Prefs!
+    shortUrl: String!
+    id: ID!
+    labelNames: LabelNames
+  }
+
+  type LabelNames {
+    green: String
+    yellow: String
+    orange: String
+    red: String
+    purple: String
+    blue: String
+    sky: String
+    lime: String
+    pink: String
+    black: String
+  }
+
+  type Prefs {
+    backgroundImage: String
   }
 
   extend type Mutation {
     updateBoard(input: UpdateBoardInput): BoardUpdatedResponsePayloads
     createBoard(input: CreateBoardInput): BoardCreateResponsePayload
     pushTagsInBoard(id: ID!, tags: [String!]): BoardCreateResponsePayload
-    pullTagsInBoard(id: ID!, tags: [String!]): BoardCreateResponsePayload
+    pullTagsFromBoard(id: ID!, tags: [String!]): BoardCreateResponsePayload
   }
 
   input UpdateBoardInput {
@@ -31,7 +78,7 @@ const typeDefs = gql `
 
   input CreateBoardInput {
     resourceid: String!
-    activeList: String!
+    activeList: String
     tags: [String]
     id: ID
   }
@@ -45,7 +92,7 @@ const typeDefs = gql `
   type BoardUpdatedResponsePayloads {
     success: Boolean!
     message: String
-    data: [Board]
+    data: Board
   }
 `;
 module.exports = typeDefs;

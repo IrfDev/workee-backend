@@ -1,6 +1,9 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
+  type Auth {
+    hello: String
+  }
   type Login {
     email: String!
     password: String
@@ -12,7 +15,7 @@ const typeDefs = gql `
 
   type JWT {
     token: String!
-    user: Login
+    usuario: String
   }
 
   input LoginInput {

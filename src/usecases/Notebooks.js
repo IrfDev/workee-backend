@@ -6,23 +6,23 @@ function getAll() {
 }
 
 function getById(id) {
-    return notebookModel.findOne({ resourceId: id });
+    return notebookModel.findById(id);
 }
 
 function create(newnotebook) {
     return notebookModel.create(newnotebook);
 }
 
-function updateNotebook(name, object) {
-    return notebookModel.findAndUpdate({ resourceid: name }, object);
+function updateNotebook(id, object) {
+    return notebookModel.findByIDAndUpdate(id, object);
 }
 
-function pullFromNotebook(resourceId, object) {
-    return notebookModel.findAndUpdate(resourceId, { $pull: object });
+function pullFromNotebook(id, object) {
+    return notebookModel.findByIdAndUpdate(id, { $pullAll: object });
 }
 
-function pushFromNotebook(resourceId, object) {
-    return notebookModel.findAndUpdate(resourceId, { $push: object });
+function pushFromNotebook(id, object) {
+    return notebookModel.findByIdAndUpdate(id, { $push: object });
 }
 
 function getNotebooksFromOnenote(token) {

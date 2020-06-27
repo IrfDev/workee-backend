@@ -8,6 +8,10 @@ function getById(id) {
     return taskModel.findById(id);
 }
 
+function getByTag(tags) {
+    return taskModel.find({ tags });
+}
+
 function create(newtask) {
     return taskModel.create(newtask);
 }
@@ -33,8 +37,8 @@ module.exports = {
     create,
     getById,
     updateTask,
-
     deleteTag,
     updateTaskfromTodo,
     pushTag,
+    getByTag,
 };

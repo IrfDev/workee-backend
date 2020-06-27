@@ -10,6 +10,8 @@ const StreamSchema = require('./schemas/Streams');
 const TaskSchema = require('./schemas/Tasks');
 const AuthSchema = require('./schemas/Auth');
 
+const resolvers = require('./resolvers/index');
+
 const schema = makeExecutableSchema({
     typeDefs: [
         boardsSchema,
@@ -22,9 +24,9 @@ const schema = makeExecutableSchema({
         TaskSchema,
         AuthSchema,
     ],
-    resolvers: {},
+    resolvers,
 });
 
-const server = new ApolloServer({ schema });
+const server = new ApolloServer({ schema, resolvers });
 
 module.exports = server;

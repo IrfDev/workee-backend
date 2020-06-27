@@ -10,7 +10,7 @@ const typeDefs = gql `
   type Query {
     getAllTasks: [Task]
     getTaskById(id: ID!): Task
-    getTasksByTag(tags: [String!]): Task
+    getTasksByTag(tags: [String!]): [Task]
   }
 
   input TagsInput {

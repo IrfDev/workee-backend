@@ -2,10 +2,12 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Heroe {
-    name: String!
+    name: String
     tags: [String]
     links: [Link]
+    id: ID!
   }
+
   type Link {
     website: String
     urlLink: String
@@ -15,13 +17,14 @@ const typeDefs = gql `
     getAllHeroes: [Heroe]
     getHeroeById(id: ID!): Heroe
     getHeroesByTags(tags: [String]): [Heroe]
+    getHeroesByName(name: String!): [Heroe]
   }
 
   extend type Mutation {
     updateHeroe(input: UpdateHeroeInput): HeroeModifiedCreatedInput
-    createHero(input: createHeroeInput): HeroeModifiedCreatedInput
-    pushTagsInHero(id: ID!, tags: [String!]): HeroeModifiedCreatedInput
-    pullTagsInHero(id: ID!, tags: [String!]): HeroeModifiedCreatedInput
+    createHeroe(input: createHeroeInput): HeroeModifiedCreatedInput
+    pushTagsInHeroe(id: ID!, tags: [String!]): HeroeModifiedCreatedInput
+    pullTagsFromHeroe(id: ID!, tags: [String!]): HeroeModifiedCreatedInput
   }
 
   input UpdateHeroeInput {
@@ -42,7 +45,7 @@ const typeDefs = gql `
   }
 
   type HeroeModifiedCreatedInput {
-    success: Boolean!
+    success: Boolean
     message: String
     data: Heroe
   }

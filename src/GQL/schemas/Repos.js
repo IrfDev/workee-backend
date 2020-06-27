@@ -10,7 +10,21 @@ const typeDefs = gql `
     getAllRepos: [Repo]
     getRepoById(id: ID!): Repo
     getReposByTechnology(technologies: TechnologiesInput): [Repo]
-    getAllGithubRepos: Repo
+    getAllGithubRepos: [ReposGithubPayload]
+  }
+
+  type ReposGithubPayload {
+    id: ID!
+    name: String
+    owner: RepoOwner
+    url: String
+    language: String
+    clone_url: String
+  }
+
+  type RepoOwner {
+    login: String
+    avatar_url: String
   }
 
   input TechnologiesInput {
