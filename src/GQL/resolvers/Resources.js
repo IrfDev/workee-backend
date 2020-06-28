@@ -1,14 +1,25 @@
+const { AuthenticationError } = require('apollo-server-express');
+
 const resolvers = {
     Query: {
-        getAllResources: async(_, __, ctx) =>
-            await ctx.resources.usecases.getAll(),
-        getResourceById: async(_, { id }, ctx) =>
-            await ctx.resources.usecases.getById(id),
-        getResourcesByTags: async(_, { tags }, ctx) =>
-            await ctx.resources.usecases.getByTag(tags),
+        getAllResources: async(_, __, ctx) => {
+            if (!ctx.resources) throw new AuthenticationError();
+            return await ctx.resources.usecases.getAll();
+        },
+
+        getResourceById: async(_, { id }, ctx) => {
+            if (!ctx.resources) throw new AuthenticationError();
+            return await ctx.resources.usecases.getById(id);
+        },
+
+        getResourcesByTags: async(_, { tags }, ctx) => {
+            if (!ctx.resources) throw new AuthenticationError();
+            return await ctx.resources.usecases.getByTag(tags);
+        },
     },
     Mutation: {
         updateResource: async(_, { input }, ctx) => {
+            if (!ctx.resources) throw new AuthenticationError();
             try {
                 const updateResource = await ctx.resources.usecases.updateResource(
                     input.id,
@@ -28,6 +39,7 @@ const resolvers = {
             }
         },
         createResource: async(_, { input }, ctx) => {
+            if (!ctx.resources) throw new AuthenticationError();
             try {
                 const newResource = await ctx.resources.usecases.create(input);
                 return {
@@ -44,6 +56,7 @@ const resolvers = {
             }
         },
         pushFromResource: async(_, { id, tags }, ctx) => {
+            if (!ctx.resources) throw new AuthenticationError();
             try {
                 const resourceUpdated = await ctx.resources.usecases.pushFromResource(
                     id,
@@ -63,6 +76,7 @@ const resolvers = {
             }
         },
         pullFromResource: async(_, { id, tags }, ctx) => {
+            if (!ctx.resources) throw new AuthenticationError();
             try {
                 const resourceUpdated = await ctx.resources.usecases.pullFromResource(
                     id,

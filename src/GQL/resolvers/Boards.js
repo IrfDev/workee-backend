@@ -1,8 +1,9 @@
-const Board = require('../../usecases/Boards');
+const { ApolloError } = require('apollo-server-express');
 
 const resolvers = {
     Board: {
         trelloBoard: async(board, _, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             const trelloBoards = await ctx.board.usecases.getTrelloBoards();
 
             return trelloBoards.find(
@@ -11,6 +12,7 @@ const resolvers = {
         },
 
         trelloActiveList: async(board, _, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             const trelloLists = await ctx.board.usecases.getTrelloListsFromBoard(
                 board.resourceId,
             );
@@ -21,6 +23,7 @@ const resolvers = {
         },
 
         trelloCardsFromActiveList: async(board, _, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             const trelloCards = await ctx.board.usecases.getTrelloCardsFromList(
                 board.activeList,
             );
@@ -29,24 +32,39 @@ const resolvers = {
         },
     },
     Query: {
-        getAllBoards: async(_, __, ctx) => await ctx.board.usecases.getAll(),
+        getAllBoards: async(_, __, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return await ctx.board.usecases.getAll();
+        },
 
-        getBoardById: async(_, { id }, ctx) =>
-            await ctx.board.usecases.getById(id),
+        getBoardById: async(_, { id }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return await ctx.board.usecases.getById(id);
+        },
 
-        getBoardsByTag: async(_, { tags }, ctx) =>
-            await ctx.board.usecases.getByTag(tags),
+        getBoardsByTag: async(_, { tags }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return await ctx.board.usecases.getByTag(tags);
+        },
 
-        getTrelloBoards: (_, __, ctx) => ctx.board.usecases.getTrelloBoards(),
+        getTrelloBoards: (_, __, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return ctx.board.usecases.getTrelloBoards();
+        },
 
-        getTrelloListsFromBoard: async(_, { boardId }, ctx) =>
-            await ctx.board.usecases.getTrelloListsFromBoard(boardId),
+        getTrelloListsFromBoard: async(_, { boardId }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return await ctx.board.usecases.getTrelloListsFromBoard(boardId);
+        },
 
-        getTrelloCardsFromList: async(_, { listId }, ctx) =>
-            await ctx.board.usecases.getTrelloCardsFromList(listId),
+        getTrelloCardsFromList: async(_, { listId }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return await ctx.board.usecases.getTrelloCardsFromList(listId);
+        },
     },
     Mutation: {
         updateBoard: async(_, { input }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             try {
                 const updatedBoard = await ctx.board.usecases.updateBoard(
                     input.id,
@@ -66,6 +84,7 @@ const resolvers = {
             }
         },
         createBoard: async(_, { input }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             try {
                 const newBoard = await ctx.board.usecases.create(input);
                 return {
@@ -82,6 +101,7 @@ const resolvers = {
             }
         },
         pushTagsInBoard: async(_, { id, tags }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             try {
                 const updatedBoard = await ctx.board.usecases.pushTagsInBoard(id, tags);
                 return {
@@ -98,6 +118,7 @@ const resolvers = {
             }
         },
         pullTagsFromBoard: async(_, { id, tags }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             try {
                 const updatedBoard = await ctx.board.usecases.pullTagsFromBoard(
                     id,

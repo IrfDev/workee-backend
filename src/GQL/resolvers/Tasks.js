@@ -1,14 +1,26 @@
+const { AuthenticationError } = require('apollo-server-express');
+
 const resolvers = {
     Query: {
-        getAllTasks: async(_, __, ctx) => await ctx.tasks.usecases.getAll(),
+        getAllTasks: async(_, __, ctx) => {
+            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            return await ctx.tasks.usecases.getAll();
+        },
 
-        getTaskById: async(_, { id }, ctx) => await ctx.tasks.usecases.getById(id),
+        getTaskById: async(_, { id }, ctx) => {
+            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            return await ctx.tasks.usecases.getById(id);
+        },
 
-        getTasksByTag: async(_, { tags }, ctx) =>
-            await ctx.tasks.usecases.getByTag(tags),
+        getTasksByTag: async(_, { tags }, ctx) => {
+            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            return await ctx.tasks.usecases.getByTag(tags);
+        },
     },
     Mutation: {
         updateTask: async(_, { input }, ctx) => {
+            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+
             try {
                 const updatedTask = await ctx.tasks.usecases.updateTask(
                     input.id,
@@ -29,6 +41,8 @@ const resolvers = {
         },
 
         createTask: async(_, { input }, ctx) => {
+            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+
             try {
                 const createdTask = await ctx.tasks.usecases.create(input);
                 return {
@@ -46,6 +60,8 @@ const resolvers = {
         },
 
         pushFromTask: async(_, { id, tags }, ctx) => {
+            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+
             try {
                 const updatedTask = await ctx.tasks.usecases.pushTag(id, tags);
                 return {
@@ -63,6 +79,8 @@ const resolvers = {
         },
 
         pullFromTask: async(_, { id, tags }, ctx) => {
+            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+
             try {
                 const updatedTask = await ctx.tasks.usecases.deleteTag(id, tags);
                 return {

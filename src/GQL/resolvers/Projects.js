@@ -1,15 +1,25 @@
+const { AuthenticationError } = require('apollo-server');
+
 const resolvers = {
     Query: {
-        getAllProjects: async(_, __, ctx) => await ctx.projects.usecases.getAll(),
+        getAllProjects: async(_, __, ctx) => {
+            if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
+            return await ctx.projects.usecases.getAll();
+        },
 
-        getProjectById: async(_, { id }, ctx) =>
-            await ctx.projects.usecases.getById(id),
+        getProjectById: async(_, { id }, ctx) => {
+            if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
+            return await ctx.projects.usecases.getById(id);
+        },
 
-        getProjectsByTags: async(_, { tags }, ctx) =>
-            await ctx.projects.usecases.getByTag(tags),
+        getProjectsByTags: async(_, { tags }, ctx) => {
+            if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
+            return await ctx.projects.usecases.getByTag(tags);
+        },
     },
     Mutation: {
         updateProject: async(_, { input }, ctx) => {
+            if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
             try {
                 const updatedProject = await ctx.projects.usecases.updateProject(
                     input.id,
@@ -29,6 +39,7 @@ const resolvers = {
             }
         },
         createProject: async(_, { input }, ctx) => {
+            if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
             try {
                 const newProject = await ctx.projects.usecases.create(input);
                 return {
@@ -45,6 +56,7 @@ const resolvers = {
             }
         },
         pushInProject: async(_, { id, target }, ctx) => {
+            if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
             try {
                 const projectUpdated = await ctx.projects.usecases.pushIds(id, target);
                 return {
@@ -61,6 +73,7 @@ const resolvers = {
             }
         },
         pullInProject: async(_, { id, target }, ctx) => {
+            if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
             try {
                 const projectUpdated = await ctx.projects.usecases.pullIds(id, target);
                 return {

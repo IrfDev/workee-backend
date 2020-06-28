@@ -1,5 +1,7 @@
 const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
 
+const responseCachePlugin = require('apollo-server-plugin-response-cache');
+
 const typeDefs = require('./schemas/index');
 const resolvers = require('./resolvers/index');
 
@@ -36,6 +38,7 @@ const server = new ApolloServer({
             'request.credentials': 'include',
         },
     },
+    plugins: [responseCachePlugin()],
 });
 
 module.exports = server;

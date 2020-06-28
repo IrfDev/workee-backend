@@ -1,15 +1,30 @@
+const { ApolloError } = require('apollo-server-express');
+
 const resolvers = {
     Query: {
-        getAllHeroes: async(_, __, ctx) => await ctx.heros.usecases.getAll(),
-        getHeroeById: async(_, args, ctx) =>
-            await ctx.heros.usecases.getById(args.id),
-        getHeroesByTags: async(_, { tags }, ctx) =>
-            await ctx.heros.usecases.getByTag(tags),
-        getHeroesByName: async(_, { name }, ctx) =>
-            await ctx.heros.usecases.getByName(name),
+        getAllHeroes: async(_, __, ctx) => {
+            if (!ctx.heros) throw new ApolloError('Unauthorized!');
+            return await ctx.heros.usecases.getAll();
+        },
+
+        getHeroeById: async(_, args, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return await ctx.heros.usecases.getById(args.id);
+        },
+
+        getHeroesByTags: async(_, { tags }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return await ctx.heros.usecases.getByTag(tags);
+        },
+
+        getHeroesByName: async(_, { name }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
+            return await ctx.heros.usecases.getByName(name);
+        },
     },
     Mutation: {
         updateHeroe: async(_, { input }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             try {
                 const updatedHero = await ctx.heros.usecases.updateHero(
                     input.id,
@@ -28,7 +43,9 @@ const resolvers = {
                 };
             }
         },
+
         async createHeroe(_, { input }, ctx) {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             try {
                 const newHero = await ctx.heros.usecases.create(input);
                 return {
@@ -44,9 +61,10 @@ const resolvers = {
                 };
             }
         },
+
         pushTagsInHeroe: async(_, { id, tags }, ctx) => {
+            if (!ctx.board) throw new ApolloError('Unauthorized!');
             try {
-                console.log(id);
                 const updatedHero = await ctx.heros.usecases.pushTagsHero(id, tags);
                 return {
                     success: true,
@@ -61,6 +79,7 @@ const resolvers = {
                 };
             }
         },
+
         pullTagsFromHeroe: async(_, { id, tags }, ctx) => {
             try {
                 const updatedHero = await ctx.heros.usecases.pullTagsHero(id, tags);

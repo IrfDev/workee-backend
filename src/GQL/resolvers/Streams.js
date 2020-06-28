@@ -1,35 +1,54 @@
+const { AuthenticationError } = require('apollo-server');
+
 const resolvers = {
     Stream: {
-        feedlyStreams: async(_, __, ctx) =>
-            await ctx.streams.usecases.getFeedsFromFeedly(),
+        feedlyStreams: async(_, __, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
+            return await ctx.streams.usecases.getFeedsFromFeedly();
+        },
 
         feedlyItems: async(stream, _, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
+
             const feedlyItems = await stream.feedlyItems.map((collectionId) => {
                 const streamObject = ctx.streams.usecases.getStreamsFromFeedly(
                     collectionId,
                 );
                 return streamObject.items;
             });
+
             return feedlyItems;
         },
     },
     Query: {
-        getAllStreams: async(_, __, ctx) => await ctx.streams.usecases.getAll(),
+        getAllStreams: async(_, __, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
+            return await ctx.streams.usecases.getAll();
+        },
 
-        getStreamById: async(_, { id }, ctx) =>
-            await ctx.streams.usecases.getById(id),
+        getStreamById: async(_, { id }, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
+            return await ctx.streams.usecases.getById(id);
+        },
 
-        getStreamsByTag: async(_, { tags }, ctx) =>
-            await ctx.streams.usecases.getByTag(tags),
+        getStreamsByTag: async(_, { tags }, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
+            return await ctx.streams.usecases.getByTag(tags);
+        },
 
-        getFeedsFromFeedly: async(_, __, ctx) =>
-            await ctx.streams.usecases.getFeedsFromFeedly(),
+        getFeedsFromFeedly: async(_, __, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
+            return await ctx.streams.usecases.getFeedsFromFeedly();
+        },
 
-        getStreamsFromFeedly: async(_, { id }, ctx) =>
-            await ctx.streams.usecases.getStreamsFromFeedly(id),
+        getStreamsFromFeedly: async(_, { id }, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
+            return await ctx.streams.usecases.getStreamsFromFeedly(id);
+        },
     },
     Mutation: {
         updateStream: async(_, { input }, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
             try {
                 const updatedStream = await ctx.streams.usecases.updateStream(
                     input.id,
@@ -48,7 +67,9 @@ const resolvers = {
                 };
             }
         },
+
         createStream: async(_, { input }, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
             try {
                 const createdStream = await ctx.streams.usecases.create(input);
                 return {
@@ -64,7 +85,9 @@ const resolvers = {
                 };
             }
         },
+
         pushFromStream: async(_, { id, tags }, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
             try {
                 const updatedStream = await ctx.streams.usecases.pushFromStream(
                     id,
@@ -83,7 +106,9 @@ const resolvers = {
                 };
             }
         },
+
         pullFromStream: async(_, { id, tags }, ctx) => {
+            if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
             try {
                 const updatedStream = await ctx.streams.usecases.pullFromStream(
                     id,
