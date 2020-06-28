@@ -1,24 +1,24 @@
 const resolvers = {
     Notebook: {
-        onenoteNotebook: async(notebook, { token }, ctx) => {
+        onenoteNotebook: async(notebook, _, ctx) => {
             const notebookOnenote = ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
-                token,
+                ctx.microsoftAuth.oauthToken.token.access_token,
                 notebook.onenoteId,
             );
-            return notebookOnenote;
+            return notebookOnenote.value;
         },
 
-        onenoteSections: async(notebook, { token }, ctx) => {
+        onenoteSections: async(notebook, _, ctx) => {
             const notebookSections = notebook.sections;
             let notebookseFromOnenote = [];
             notebookSections.map(async(section) => {
                 const sectionOnenote = await ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
-                    token,
+                    ctx.microsoftAuth.oauthToken.token.access_token,
                     section,
                 );
                 notebookseFromOnenote.push(sectionOnenote);
             });
-            return notebookseFromOnenote;
+            return notebookseFromOnenote.value;
         },
     },
     Query: {
@@ -31,11 +31,23 @@ const resolvers = {
         getNotebooksByTags: async(_, { tags }, ctx) =>
             await ctx.notebooks.usecases.getByTag(tags),
 
-        getNotebooksFromOnenote: async(_, { token }, ctx) =>
-            await ctx.notebooks.usecases.getNotebooksFromOnenote(token),
+        getNotebooksFromOnenote: async(_, __, ctx) => {
+            const notebooksArray = await ctx.notebooks.usecases.getNotebooksFromOnenote(
+                ctx.microsoftAuth.oauthToken.token.access_token,
+            );
 
-        getSectionsFromOnenote: async(_, { token, notebookId }, ctx) =>
-            await ctx.notebooks.usecases.getSectionsFromOnenote(token, notebookId),
+            return notebooksArray.value;
+        },
+
+        getSectionsFromOnenote: async(_, { notebookId }, ctx) => {
+            const sectionsArray = await ctx.notebooks.usecases.getSectionsFromOnenote(
+                ctx.microsoftAuth.oauthToken.token.access_token,
+                notebookId,
+            );
+
+            console.log(sectionsArray);
+            return sectionsArray.value;
+        },
     },
     Mutation: {
         updateNotebook: async(_, { input }, ctx) => {

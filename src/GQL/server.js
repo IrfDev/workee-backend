@@ -10,6 +10,21 @@ const schema = makeExecutableSchema({
     resolvers,
 });
 
-const server = new ApolloServer({ schema, resolvers, context });
+const server = new ApolloServer({
+    schema,
+    resolvers,
+    context: ({ req }) => {
+        return {
+            ...context,
+            token: req.headers.authorization,
+            microsoftAuth: req.user,
+        };
+    },
+    playground: {
+        settings: {
+            'request.credentials': 'include',
+        },
+    },
+});
 
 module.exports = server;

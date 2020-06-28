@@ -8,10 +8,8 @@ const passportSetup = require('./Lib/passport');
 
 const cookieParser = require('cookie-parser');
 
-const apolloServer = require('./GQL/server');
-
 const app = express();
-apolloServer.applyMiddleware({ app, path: '/graphql' });
+
 app.use(express.urlencoded({ extended: false }));
 
 app.use(
@@ -27,6 +25,10 @@ app.use(express.json());
 
 app.use(passport.initialize(passportSetup));
 app.use(passport.session());
+
+const apolloServer = require('./GQL/server');
+apolloServer.applyMiddleware({ app });
+
 require('./Lib/router')(app);
 
 // app.use(cors);
