@@ -68,10 +68,10 @@ const typeDefs = gql `
   }
 
   extend type Mutation {
-    updateBoard(input: UpdateBoardInput): BoardUpdatedResponsePayloads
-    createBoard(input: CreateBoardInput): BoardCreateResponsePayload
-    pushTagsInBoard(id: ID!, tags: [String!]): BoardCreateResponsePayload
-    pullTagsFromBoard(id: ID!, tags: [String!]): BoardCreateResponsePayload
+    updateBoard(input: UpdateBoardInput): BoardDataResponsePayload
+    createBoard(input: CreateBoardInput): BoardDataResponsePayload
+    pushTagsInBoard(id: ID!, tags: [String!]): BoardDataResponsePayload
+    pullTagsFromBoard(id: ID!, tags: [String!]): BoardDataResponsePayload
   }
 
   input UpdateBoardInput {
@@ -86,13 +86,7 @@ const typeDefs = gql `
     id: ID
   }
 
-  type BoardCreateResponsePayload {
-    success: Boolean!
-    message: String
-    data: Board
-  }
-
-  type BoardUpdatedResponsePayloads {
+  type BoardDataResponsePayload {
     success: Boolean!
     message: String
     data: Board
