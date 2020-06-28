@@ -1,5 +1,4 @@
 const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
-const { applyMiddleware } = require('graphql-middleware');
 
 const typeDefs = require('./schemas/index');
 const resolvers = require('./resolvers/index');
@@ -10,8 +9,6 @@ const schema = makeExecutableSchema({
     typeDefs,
     resolvers,
 });
-
-const schemaWithMiddleware = applyMiddleware(schema);
 
 const server = new ApolloServer({
     schema,

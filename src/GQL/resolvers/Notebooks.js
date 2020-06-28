@@ -1,4 +1,4 @@
-const { ApolloError } = require('apollo-server');
+const { ApolloError, AuthenticationError } = require('apollo-server');
 
 const resolvers = {
     Notebook: {
@@ -10,7 +10,7 @@ const resolvers = {
                 );
                 return notebookOnenote.value;
             } else {
-                throw new ApolloError('Unauthorized from Microsoft', 501);
+                throw new AuthenticationError('Unauthorized from Microsoft');
             }
         },
 
@@ -27,7 +27,7 @@ const resolvers = {
                 });
                 return notebookseFromOnenote.value;
             } else {
-                throw new ApolloError('Unauthorized from Microsoft', 501);
+                throw new AuthenticationError('Unauthorized from Microsoft');
             }
         },
     },
@@ -49,7 +49,7 @@ const resolvers = {
 
                 return notebooksArray.value;
             } else {
-                throw new ApolloError('Unauthorized from Microsoft', 501);
+                throw new AuthenticationError('Unauthorized from Microsoft');
             }
         },
 
@@ -62,7 +62,7 @@ const resolvers = {
 
                 return sectionsArray.value;
             } else {
-                throw new ApolloError('Unauthorized from Microsoft', 501);
+                throw new AuthenticationError('Unauthorized from Microsoft');
             }
         },
     },
@@ -89,7 +89,6 @@ const resolvers = {
         },
 
         pullFromNotebook: async(_, { input, target }, ctx) => {
-            console.log(target);
             const updatedNotebook = await ctx.notebooks.usecases.pullFromNotebook(
                 input.id,
                 target,
