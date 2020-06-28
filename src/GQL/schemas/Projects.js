@@ -13,22 +13,22 @@ const typeDefs = gql `
   }
 
   type Weekly {
-    Boards: [String]
+    Boards: [Board]
   }
 
   type Daily {
-    tasks: [String]
+    tasks: [Task]
   }
 
   type Sources {
-    streams: [String]
-    heroes: [String]
+    streams: [Stream]
+    heroes: [Heroe]
   }
 
   type Resources {
-    repos: [String]
-    notebooks: [String]
-    resources: [String]
+    repos: [Repo]
+    notebooks: [Notebook]
+    resources: [Resource]
   }
 
   extend type Query {

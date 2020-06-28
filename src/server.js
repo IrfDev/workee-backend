@@ -28,6 +28,7 @@ app.use(passport.session());
 
 const apolloServer = require('./GQL/server');
 apolloServer.applyMiddleware({ app });
+console.log('🚀 Apollo server running on path /graphql');
 
 require('./Lib/router')(app);
 

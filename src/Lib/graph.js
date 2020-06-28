@@ -24,7 +24,6 @@ module.exports = {
     getNotebooks: async function(accessToken) {
         const client = getAuthenticatedClient(accessToken);
         const notebooks = await client.api('/me/onenote/notebooks').get();
-        console.log('Notebooks usecases', notebooks);
 
         return notebooks;
     },
@@ -32,7 +31,6 @@ module.exports = {
     getNotebookById: async function(accessToken, id) {
         const client = getAuthenticatedClient(accessToken);
         const notebooks = await client.api(`/me/onenote/notebooks/${id}`).get();
-        console.log('Notebooks usecases', notebooks);
 
         return notebooks;
     },

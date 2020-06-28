@@ -36,7 +36,6 @@ function pushFromRepo(id, object) {
 async function getAllRepos() {
     try {
         const repos = await Axios.get('https://api.github.com/users/irfdev/repos');
-        console.log(repos);
         return repos.data;
     } catch (error) {
         return error;

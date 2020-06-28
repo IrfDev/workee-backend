@@ -3,7 +3,6 @@ const bcrypt = require('../lib/bcrypt');
 const User = require('../Models/User');
 
 async function getLogin(email, password) {
-    console.log('GetLogin Resolver', { email, password });
     const userFounded = await User.findOne({ email });
     if (!userFounded) throw new Error('No se encontro un usuario con este email');
 
