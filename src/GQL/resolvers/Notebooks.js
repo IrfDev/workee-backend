@@ -1,6 +1,26 @@
 const Notebook = require('../../usecases/Notebooks');
 
 const resolvers = {
+    Notebook: {
+        onenoteNotebook: async(notebook, { token }) => {
+            const notebookOnenote = Notebook.getNotebooksByIdFromOnenote(
+                token,
+                notebook.onenoteId,
+            );
+            return notebookOnenote;
+        },
+        onenoteSections: async(notebook, { token }) => {
+            const notebookSections = notebook.sections;
+            let notebookseFromOnenote = [];
+            notebookSections.map(async(section) => {
+                const sectionOnenote = await Notebook.getNotebooksByIdFromOnenote(
+                    section,
+                );
+                notebookseFromOnenote.push(sectionOnenote);
+            });
+            return notebookseFromOnenote;
+        },
+    },
     Query: {
         getAllNotebooks: async() => await Notebook.getAll(),
         getNotebookById: async(_, { id }) => await Notebook.getById(id),

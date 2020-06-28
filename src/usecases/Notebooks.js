@@ -29,8 +29,16 @@ function getNotebooksFromOnenote(token) {
     return graph.getNotebooks(token);
 }
 
+function getNotebooksByIdFromOnenote(token, id) {
+    return graph.getNotebookById(token, id);
+}
+
 function getSectionsFromOnenote(token, notebookId) {
     return graph.getSections(token, notebookId);
+}
+
+function getSectionsFromNotebook(token, sectionId) {
+    return graph.getSectionsFromNotebook(token, sectionId);
 }
 
 module.exports = {
@@ -42,4 +50,5 @@ module.exports = {
     pullFromNotebook,
     getSectionsFromOnenote,
     getNotebooksFromOnenote,
+    getNotebooksByIdFromOnenote,
 };

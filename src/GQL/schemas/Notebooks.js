@@ -2,7 +2,9 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Notebook {
-    oneNoteId: String!
+    onenoteId: String!
+    onenoteNotebook(token: String!): NotebookFromOneNotePayload
+    onenoteSections(token: String!): [NotebookFromOneNotePayload]
     sections: [String]
     tags: [String]
     id: ID!

@@ -1,6 +1,16 @@
 const Stream = require('../../usecases/Streams');
 
 const resolvers = {
+    Stream: {
+        feedlyStreams: async() => await Stream.getFeedsFromFeedly(),
+        feedlyItems: async(stream) => {
+            const feedlyItems = await stream.feedlyItems.map((collectionId) => {
+                const streamObject = Stream.getStreamsFromFeedly(collectionId);
+                return streamObject.items;
+            });
+            return feedlyItems;
+        },
+    },
     Query: {
         getAllStreams: async() => await Stream.getAll(),
         getStreamById: async(_, { id }, ___) => await Stream.getById(id),

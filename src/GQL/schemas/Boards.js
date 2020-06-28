@@ -3,7 +3,10 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql `
   type Board {
     resourceid: String!
+    trelloBoard: TrelloBoardsPayload!
     activeList: String!
+    trelloActiveList: TrelloListPayload!
+    trelloCardsFromActiveList: [TrelloCardsPayload!]
     tags: [String]
     id: ID
   }

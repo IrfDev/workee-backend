@@ -28,12 +28,28 @@ module.exports = {
 
         return notebooks;
     },
+
+    getNotebookById: async function(accessToken, id) {
+        const client = getAuthenticatedClient(accessToken);
+        const notebooks = await client.api(`/me/onenote/notebooks/${id}`).get();
+        console.log('Notebooks usecases', notebooks);
+
+        return notebooks;
+    },
+
     getSections: async function(accessToken, notebookId) {
         const client = getAuthenticatedClient(accessToken);
         const notebooks = await client
             .api(`/me/onenote/notebooks/${notebookId}/sections`)
             .get();
-        console.log('Notebooks usecases', notebooks);
+
+        return notebooks;
+    },
+    getSectionById: async function(accessToken, sectionId) {
+        const client = getAuthenticatedClient(accessToken);
+        const notebooks = await client
+            .api(`/me/onenote/sections/${sectionId}`)
+            .get();
 
         return notebooks;
     },

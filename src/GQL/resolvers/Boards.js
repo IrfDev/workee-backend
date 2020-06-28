@@ -1,6 +1,27 @@
 const Board = require('../../usecases/Boards');
 
 const resolvers = {
+    Board: {
+        trelloBoard: async(board) => {
+            const trelloBoards = await Board.getTrelloBoards();
+
+            return trelloBoards.find(
+                (trelloBoard) => trelloBoard.id === board.resourceid,
+            );
+        },
+        trelloActiveList: async(board) => {
+            const trelloLists = await Board.getTrelloListsFromBoard(board.resourceId);
+
+            return trelloLists.find(
+                (trelloList) => trelloList.id === board.activeList,
+            );
+        },
+        trelloCardsFromActiveList: async(board) => {
+            const trelloCards = await Board.getTrelloCardsFromList(board.activeList);
+
+            return trelloCards;
+        },
+    },
     Query: {
         getAllBoards: async() => await Board.getAll(),
         getBoardById: async(_, { id }, ___) => await Board.getById(id),

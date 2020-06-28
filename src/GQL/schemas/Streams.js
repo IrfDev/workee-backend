@@ -2,8 +2,9 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Stream {
-    streamId: String!
     feedlyStreamsid: [String!]
+    feedlyStreams: FeedFromFeedlyPayload
+    feedlyItems: [FeedItem]
     tags: [String!]
   }
 
@@ -24,23 +25,40 @@ const typeDefs = gql `
   }
 
   type FeedItem {
-    id: String
-    title: String
-    keywords: [String]
-    content: ContentFeedItem
-    label: String
-    author: String
-    canonicalUrl: String
-    visual: VisuaFeedItem
+    id: String!
+    title: String!
+    keywords: [String!]
+    summary: FeedItemSummary!
+    content: FeedItemContent!
+    label: String!
+    author: String!
+    canonicalUrl: String!
+    origin: FeedItemOrigin!
+    visual: FeedItemVisual!
+    categories: [FeedItemCategory!]
   }
 
-  type VisuaFeedItem {
+  type FeedItemSummary {
+    content: String!
+  }
+
+  type FeedItemCategory {
+    id: String!
+    label: String!
+  }
+
+  type FeedItemOrigin {
+    title: String!
+    htmlUrl: String!
+  }
+
+  type FeedItemVisual {
     url: String!
     width: Int!
     Height: Int!
   }
 
-  type ContentFeedItem {
+  type FeedItemContent {
     content: String
   }
 
@@ -67,7 +85,6 @@ const typeDefs = gql `
   }
 
   input CreateStreamInput {
-    streamId: String!
     feedlyStreamsid: [String!]
     tags: [String!]
   }

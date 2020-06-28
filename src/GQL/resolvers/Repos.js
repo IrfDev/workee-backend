@@ -1,10 +1,16 @@
 const Repo = require('../../usecases/Repos');
 
 const resolvers = {
+    Repo: {
+        githubRepo: async(repo) => {
+            const githubRepos = await Repo.getAllRepos();
+            return githubRepos.find((githubRepo) => githubRepo.id === repo.githubId);
+        },
+    },
     Query: {
         getAllRepos: async() => await Repo.getAll(),
-        getRepoById: async(_, __, { id }, ___) => await Repo.getById(id),
-        getReposByTechnology: async(_, __, { technologies }, ___) =>
+        getRepoById: async(_, { id }, ___) => await Repo.getById(id),
+        getReposByTechnology: async(_, { technologies }, ___) =>
             await Repo.getByTechnology(technologies),
         getAllGithubRepos: async() => await Repo.getAllRepos(),
     },
