@@ -1,32 +1,15 @@
 const { ApolloServer, makeExecutableSchema } = require('apollo-server-express');
 
-const boardsSchema = require('./schemas/Boards');
-const heroeSchema = require('./schemas/Heroes');
-const notebookSchema = require('./schemas/Notebooks');
-const projectSchema = require('./schemas/Projects');
-const RepoSchema = require('./schemas/Repos');
-const ResourceSchema = require('./schemas/Resources');
-const StreamSchema = require('./schemas/Streams');
-const TaskSchema = require('./schemas/Tasks');
-const AuthSchema = require('./schemas/Auth');
-
+const typeDefs = require('./schemas/index');
 const resolvers = require('./resolvers/index');
 
+const context = require('./context');
+
 const schema = makeExecutableSchema({
-    typeDefs: [
-        boardsSchema,
-        heroeSchema,
-        notebookSchema,
-        projectSchema,
-        RepoSchema,
-        ResourceSchema,
-        StreamSchema,
-        TaskSchema,
-        AuthSchema,
-    ],
+    typeDefs,
     resolvers,
 });
 
-const server = new ApolloServer({ schema, resolvers });
+const server = new ApolloServer({ schema, resolvers, context });
 
 module.exports = server;

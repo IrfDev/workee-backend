@@ -2,40 +2,56 @@ const Board = require('../../usecases/Boards');
 
 const resolvers = {
     Board: {
-        trelloBoard: async(board) => {
-            const trelloBoards = await Board.getTrelloBoards();
+        trelloBoard: async(board, _, ctx) => {
+            const trelloBoards = await ctx.board.usecases.getTrelloBoards();
 
             return trelloBoards.find(
                 (trelloBoard) => trelloBoard.id === board.resourceid,
             );
         },
-        trelloActiveList: async(board) => {
-            const trelloLists = await Board.getTrelloListsFromBoard(board.resourceId);
+
+        trelloActiveList: async(board, _, ctx) => {
+            const trelloLists = await ctx.board.usecases.getTrelloListsFromBoard(
+                board.resourceId,
+            );
 
             return trelloLists.find(
                 (trelloList) => trelloList.id === board.activeList,
             );
         },
-        trelloCardsFromActiveList: async(board) => {
-            const trelloCards = await Board.getTrelloCardsFromList(board.activeList);
+
+        trelloCardsFromActiveList: async(board, _, ctx) => {
+            const trelloCards = await ctx.board.usecases.getTrelloCardsFromList(
+                board.activeList,
+            );
 
             return trelloCards;
         },
     },
     Query: {
-        getAllBoards: async() => await Board.getAll(),
-        getBoardById: async(_, { id }, ___) => await Board.getById(id),
-        getBoardsByTag: async(_, { tags }, ___) => await Board.getByTag(tags),
-        getTrelloBoards: () => Board.getTrelloBoards(),
-        getTrelloListsFromBoard: async(_, { boardId }, ___) =>
-            await Board.getTrelloListsFromBoard(boardId),
-        getTrelloCardsFromList: async(_, { listId }, ___) =>
-            await Board.getTrelloCardsFromList(listId),
+        getAllBoards: async(_, __, ctx) => await ctx.board.usecases.getAll(),
+
+        getBoardById: async(_, { id }, ctx) =>
+            await ctx.board.usecases.getById(id),
+
+        getBoardsByTag: async(_, { tags }, ctx) =>
+            await ctx.board.usecases.getByTag(tags),
+
+        getTrelloBoards: (_, __, ctx) => ctx.board.usecases.getTrelloBoards(),
+
+        getTrelloListsFromBoard: async(_, { boardId }, ctx) =>
+            await ctx.board.usecases.getTrelloListsFromBoard(boardId),
+
+        getTrelloCardsFromList: async(_, { listId }, ctx) =>
+            await ctx.board.usecases.getTrelloCardsFromList(listId),
     },
     Mutation: {
-        updateBoard: async(_, { input }, ___) => {
+        updateBoard: async(_, { input }, ctx) => {
             try {
-                const updatedBoard = await Board.updateBoard(input.id, input);
+                const updatedBoard = await ctx.board.usecases.updateBoard(
+                    input.id,
+                    input,
+                );
                 return {
                     success: true,
                     message: 'Board updated',
@@ -49,9 +65,9 @@ const resolvers = {
                 };
             }
         },
-        createBoard: async(_, { input }, ___) => {
+        createBoard: async(_, { input }, ctx) => {
             try {
-                const newBoard = await Board.create(input);
+                const newBoard = await ctx.board.usecases.create(input);
                 return {
                     success: true,
                     message: 'New board created',
@@ -65,9 +81,9 @@ const resolvers = {
                 };
             }
         },
-        pushTagsInBoard: async(_, { id, tags }, ___) => {
+        pushTagsInBoard: async(_, { id, tags }, ctx) => {
             try {
-                const updatedBoard = await Board.pushTagsInBoard(id, tags);
+                const updatedBoard = await ctx.board.usecases.pushTagsInBoard(id, tags);
                 return {
                     success: true,
                     message: `Correctly push ${tags} into ${id}`,
@@ -81,9 +97,12 @@ const resolvers = {
                 };
             }
         },
-        pullTagsFromBoard: async(_, { id, tags }, ___) => {
+        pullTagsFromBoard: async(_, { id, tags }, ctx) => {
             try {
-                const updatedBoard = await Board.pullTagsFromBoard(id, tags);
+                const updatedBoard = await ctx.board.usecases.pullTagsFromBoard(
+                    id,
+                    tags,
+                );
                 return {
                     success: true,
                     message: `Correctly pull ${tags} from ${id}`,

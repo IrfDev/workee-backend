@@ -2,22 +2,29 @@ const Repo = require('../../usecases/Repos');
 
 const resolvers = {
     Repo: {
-        githubRepo: async(repo) => {
-            const githubRepos = await Repo.getAllRepos();
+        githubRepo: async(repo, _, ctx) => {
+            const githubRepos = await ctx.repos.usecases.getAllRepos();
             return githubRepos.find((githubRepo) => githubRepo.id === repo.githubId);
         },
     },
     Query: {
-        getAllRepos: async() => await Repo.getAll(),
-        getRepoById: async(_, { id }, ___) => await Repo.getById(id),
-        getReposByTechnology: async(_, { technologies }, ___) =>
-            await Repo.getByTechnology(technologies),
-        getAllGithubRepos: async() => await Repo.getAllRepos(),
+        getAllRepos: async(_, __, ctx) => await ctx.repos.usecasesgetAll(),
+
+        getRepoById: async(_, { id }, ctx) => await ctx.repos.usecasesgetById(id),
+
+        getReposByTechnology: async(_, { technologies }, ctx) =>
+            await ctx.repos.usecasesgetByTechnology(technologies),
+
+        getAllGithubRepos: async(_, __, ctx) =>
+            await ctx.repos.usecasesgetAllRepos(),
     },
     Mutation: {
-        updateRepo: async(_, { input }, ___) => {
+        updateRepo: async(_, { input }, ctx) => {
             try {
-                const updatedProject = await Repo.updateRepo(input.id, input);
+                const updatedProject = await ctx.repos.usecasesupdateRepo(
+                    input.id,
+                    input,
+                );
                 return {
                     success: true,
                     message: `Repo updated ${updatedProject}`,
@@ -31,9 +38,9 @@ const resolvers = {
                 };
             }
         },
-        createRepo: async(_, { input }, ___) => {
+        createRepo: async(_, { input }, ctx) => {
             try {
-                const updatedProject = await Repo.create(input);
+                const updatedProject = await ctx.repos.usecasescreate(input);
                 return {
                     success: true,
                     message: `Repo updated ${updatedProject}`,
@@ -47,9 +54,12 @@ const resolvers = {
                 };
             }
         },
-        pushFromRepo: async(_, { id, technologies }, ___) => {
+        pushFromRepo: async(_, { id, technologies }, ctx) => {
             try {
-                const updatedProject = await Repo.pullFromRepo(id, technologies);
+                const updatedProject = await ctx.repos.usecasespullFromRepo(
+                    id,
+                    technologies,
+                );
                 return {
                     success: true,
                     message: `Repo updated ${updatedProject}`,
@@ -63,9 +73,12 @@ const resolvers = {
                 };
             }
         },
-        pullFromRepo: async(_, { id, technologies }, ___) => {
+        pullFromRepo: async(_, { id, technologies }, ctx) => {
             try {
-                const updatedProject = await Repo.pushFromRepo(id, technologies);
+                const updatedProject = await ctx.repos.usecasespushFromRepo(
+                    id,
+                    technologies,
+                );
                 return {
                     success: true,
                     message: `Repo updated ${updatedProject}`,

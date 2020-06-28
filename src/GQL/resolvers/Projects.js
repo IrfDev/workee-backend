@@ -1,15 +1,20 @@
-const Project = require('../../usecases/Projects');
-
 const resolvers = {
     Query: {
-        getAllProjects: async() => await Project.getAll(),
-        getProjectById: async(_, { id }) => await Project.getById(id),
-        getProjectsByTags: async(_, { tags }) => await Project.getByTag(tags),
+        getAllProjects: async(_, __, ctx) => await ctx.projects.usecases.getAll(),
+
+        getProjectById: async(_, { id }, ctx) =>
+            await ctx.projects.usecases.getById(id),
+
+        getProjectsByTags: async(_, { tags }, ctx) =>
+            await ctx.projects.usecases.getByTag(tags),
     },
     Mutation: {
-        updateProject: async(_, { input }) => {
+        updateProject: async(_, { input }, ctx) => {
             try {
-                const updatedProject = await Project.updateProject(input.id, input);
+                const updatedProject = await ctx.projects.usecases.updateProject(
+                    input.id,
+                    input,
+                );
                 return {
                     success: true,
                     message: `Notebook updated ${updatedProject}`,
@@ -23,9 +28,9 @@ const resolvers = {
                 };
             }
         },
-        createProject: async(_, { input }) => {
+        createProject: async(_, { input }, ctx) => {
             try {
-                const newProject = await Project.create(input);
+                const newProject = await ctx.projects.usecases.create(input);
                 return {
                     success: true,
                     message: `Project updated ${newProject}`,
@@ -39,9 +44,9 @@ const resolvers = {
                 };
             }
         },
-        pushInProject: async(_, { id, target }) => {
+        pushInProject: async(_, { id, target }, ctx) => {
             try {
-                const projectUpdated = await Project.pushIds(id, target);
+                const projectUpdated = await ctx.projects.usecases.pushIds(id, target);
                 return {
                     success: true,
                     message: `Project updated ${projectUpdated}`,
@@ -55,9 +60,9 @@ const resolvers = {
                 };
             }
         },
-        pullInProject: async(_, { id, target }) => {
+        pullInProject: async(_, { id, target }, ctx) => {
             try {
-                const projectUpdated = await Project.pullIds(id, target);
+                const projectUpdated = await ctx.projects.usecases.pullIds(id, target);
                 return {
                     success: true,
                     message: `Project updated ${projectUpdated}`,

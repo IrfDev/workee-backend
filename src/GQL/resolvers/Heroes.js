@@ -1,17 +1,20 @@
-const Heroe = require('../../usecases/Heroes');
-
 const resolvers = {
     Query: {
-        getAllHeroes: async() => await Heroe.getAll(),
-        getHeroeById: async(_, args, ___) => await Heroe.getById(args.id),
-        getHeroesByTags: async(_, { tags }, ___) => await Heroe.getByTag(tags),
-        getHeroesByName: async(_, { name }, ___) => await Heroe.getByName(name),
+        getAllHeroes: async(_, __, ctx) => await ctx.heros.usecases.getAll(),
+        getHeroeById: async(_, args, ctx) =>
+            await ctx.heros.usecases.getById(args.id),
+        getHeroesByTags: async(_, { tags }, ctx) =>
+            await ctx.heros.usecases.getByTag(tags),
+        getHeroesByName: async(_, { name }, ctx) =>
+            await ctx.heros.usecases.getByName(name),
     },
     Mutation: {
-        updateHeroe: async(_, { input }, ___) => {
+        updateHeroe: async(_, { input }, ctx) => {
             try {
-                console.log({ input });
-                const updatedHero = await Heroe.updateHero(input.id, input);
+                const updatedHero = await ctx.heros.usecases.updateHero(
+                    input.id,
+                    input,
+                );
                 return {
                     success: true,
                     message: 'Updated Hero',
@@ -25,9 +28,9 @@ const resolvers = {
                 };
             }
         },
-        async createHeroe(_, { input }, ___) {
+        async createHeroe(_, { input }, ctx) {
             try {
-                const newHero = await Heroe.create(input);
+                const newHero = await ctx.heros.usecases.create(input);
                 return {
                     success: true,
                     message: 'New Heroe created',
@@ -41,10 +44,10 @@ const resolvers = {
                 };
             }
         },
-        pushTagsInHeroe: async(_, { id, tags }, ___) => {
+        pushTagsInHeroe: async(_, { id, tags }, ctx) => {
             try {
                 console.log(id);
-                const updatedHero = await Heroe.pushTagsHero(id, tags);
+                const updatedHero = await ctx.heros.usecases.pushTagsHero(id, tags);
                 return {
                     success: true,
                     message: `Succesfully push ${tags} into ${id}`,
@@ -58,9 +61,9 @@ const resolvers = {
                 };
             }
         },
-        pullTagsFromHeroe: async(_, { id, tags }, ___) => {
+        pullTagsFromHeroe: async(_, { id, tags }, ctx) => {
             try {
-                const updatedHero = await Heroe.pullTagsHero(id, tags);
+                const updatedHero = await ctx.heros.usecases.pullTagsHero(id, tags);
                 return {
                     success: true,
                     message: `Succesfully pull ${tags} from ${id}`,

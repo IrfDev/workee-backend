@@ -1,28 +1,40 @@
-const Stream = require('../../usecases/Streams');
-
 const resolvers = {
     Stream: {
-        feedlyStreams: async() => await Stream.getFeedsFromFeedly(),
-        feedlyItems: async(stream) => {
+        feedlyStreams: async(_, __, ctx) =>
+            await ctx.streams.usecases.getFeedsFromFeedly(),
+
+        feedlyItems: async(stream, _, ctx) => {
             const feedlyItems = await stream.feedlyItems.map((collectionId) => {
-                const streamObject = Stream.getStreamsFromFeedly(collectionId);
+                const streamObject = ctx.streams.usecases.getStreamsFromFeedly(
+                    collectionId,
+                );
                 return streamObject.items;
             });
             return feedlyItems;
         },
     },
     Query: {
-        getAllStreams: async() => await Stream.getAll(),
-        getStreamById: async(_, { id }, ___) => await Stream.getById(id),
-        getStreamsByTag: async(_, { tags }, ___) => await Stream.getByTag(tags),
-        getFeedsFromFeedly: async() => await Stream.getFeedsFromFeedly(),
-        getStreamsFromFeedly: async(_, { id }) =>
-            await Stream.getStreamsFromFeedly(id),
+        getAllStreams: async(_, __, ctx) => await ctx.streams.usecases.getAll(),
+
+        getStreamById: async(_, { id }, ctx) =>
+            await ctx.streams.usecases.getById(id),
+
+        getStreamsByTag: async(_, { tags }, ctx) =>
+            await ctx.streams.usecases.getByTag(tags),
+
+        getFeedsFromFeedly: async(_, __, ctx) =>
+            await ctx.streams.usecases.getFeedsFromFeedly(),
+
+        getStreamsFromFeedly: async(_, { id }, ctx) =>
+            await ctx.streams.usecases.getStreamsFromFeedly(id),
     },
     Mutation: {
-        updateStream: async(_, { input }, ___) => {
+        updateStream: async(_, { input }, ctx) => {
             try {
-                const updatedStream = await Stream.updateStream(input.id, input);
+                const updatedStream = await ctx.streams.usecases.updateStream(
+                    input.id,
+                    input,
+                );
                 return {
                     success: true,
                     message: `Stream updated ${updatedProject}`,
@@ -36,9 +48,9 @@ const resolvers = {
                 };
             }
         },
-        createStream: async(_, { input }, ___) => {
+        createStream: async(_, { input }, ctx) => {
             try {
-                const createdStream = await Stream.create(input);
+                const createdStream = await ctx.streams.usecases.create(input);
                 return {
                     success: true,
                     message: `Stream created ${updatedProject}`,
@@ -52,9 +64,12 @@ const resolvers = {
                 };
             }
         },
-        pushFromStream: async(_, { id, tags }, ___) => {
+        pushFromStream: async(_, { id, tags }, ctx) => {
             try {
-                const updatedStream = await Stream.pushFromStream(id, tags);
+                const updatedStream = await ctx.streams.usecases.pushFromStream(
+                    id,
+                    tags,
+                );
                 return {
                     success: true,
                     message: `Stream updated ${updatedProject}`,
@@ -68,9 +83,12 @@ const resolvers = {
                 };
             }
         },
-        pullFromStream: async(_, { id, tags }, ___) => {
+        pullFromStream: async(_, { id, tags }, ctx) => {
             try {
-                const updatedStream = await Stream.pullFromStream(id, tags);
+                const updatedStream = await ctx.streams.usecases.pullFromStream(
+                    id,
+                    tags,
+                );
                 return {
                     success: true,
                     message: `Stream updated ${updatedProject}`,

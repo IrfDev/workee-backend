@@ -1,15 +1,19 @@
-const Task = require('../../usecases/Tasks');
-
 const resolvers = {
     Query: {
-        getAllTasks: async() => await Task.getAll(),
-        getTaskById: async(_, { id }, ___) => await Task.getById(id),
-        getTasksByTag: async(_, { tags }, ___) => await Task.getByTag(tags),
+        getAllTasks: async(_, __, ctx) => await ctx.tasks.usecases.getAll(),
+
+        getTaskById: async(_, { id }, ctx) => await ctx.tasks.usecases.getById(id),
+
+        getTasksByTag: async(_, { tags }, ctx) =>
+            await ctx.tasks.usecases.getByTag(tags),
     },
     Mutation: {
-        updateTask: async(_, { input }, ___) => {
+        updateTask: async(_, { input }, ctx) => {
             try {
-                const updatedTask = await Task.updateTask(input.id, input);
+                const updatedTask = await ctx.tasks.usecases.updateTask(
+                    input.id,
+                    input,
+                );
                 return {
                     success: true,
                     message: `Task updated ${updatedTask}`,
@@ -23,9 +27,10 @@ const resolvers = {
                 };
             }
         },
-        createTask: async(_, { input }, ___) => {
+
+        createTask: async(_, { input }, ctx) => {
             try {
-                const createdTask = await Task.create(input);
+                const createdTask = await ctx.tasks.usecases.create(input);
                 return {
                     success: true,
                     message: `Task created ${createdTask}`,
@@ -39,9 +44,10 @@ const resolvers = {
                 };
             }
         },
-        pushFromTask: async(_, { id, tags }, ___) => {
+
+        pushFromTask: async(_, { id, tags }, ctx) => {
             try {
-                const updatedTask = await Task.pushTag(id, tags);
+                const updatedTask = await ctx.tasks.usecases.pushTag(id, tags);
                 return {
                     success: true,
                     message: `Task updated ${updatedTask}`,
@@ -55,9 +61,10 @@ const resolvers = {
                 };
             }
         },
-        pullFromTask: async(_, { id, tags }, ___) => {
+
+        pullFromTask: async(_, { id, tags }, ctx) => {
             try {
-                const updatedTask = await Task.deleteTag(id, tags);
+                const updatedTask = await ctx.tasks.usecases.deleteTag(id, tags);
                 return {
                     success: true,
                     message: `Task updated ${updatedTask}`,

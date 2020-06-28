@@ -1,16 +1,19 @@
-const Resource = require('../../usecases/Resources');
-
 const resolvers = {
     Query: {
-        getAllResources: async() => await Resource.getAll(),
-        getResourceById: async(_, { id }, ___) => await Resource.getById(id),
-        getResourcesByTags: async(_, { tags }, ___) =>
-            await Resource.getByTag(tags),
+        getAllResources: async(_, __, ctx) =>
+            await ctx.resources.usecases.getAll(),
+        getResourceById: async(_, { id }, ctx) =>
+            await ctx.resources.usecases.getById(id),
+        getResourcesByTags: async(_, { tags }, ctx) =>
+            await ctx.resources.usecases.getByTag(tags),
     },
     Mutation: {
-        updateResource: async(_, { input }, ___) => {
+        updateResource: async(_, { input }, ctx) => {
             try {
-                const updateResource = await Resource.updateResource(input.id, input);
+                const updateResource = await ctx.resources.usecases.updateResource(
+                    input.id,
+                    input,
+                );
                 return {
                     success: true,
                     message: `Updated resource ${updateResource.id}`,
@@ -24,9 +27,9 @@ const resolvers = {
                 };
             }
         },
-        createResource: async(_, { input }, ___) => {
+        createResource: async(_, { input }, ctx) => {
             try {
-                const newResource = await Resource.create(input);
+                const newResource = await ctx.resources.usecases.create(input);
                 return {
                     success: true,
                     message: `New resource ${newResource.id}`,
@@ -40,9 +43,12 @@ const resolvers = {
                 };
             }
         },
-        pushFromResource: async(_, { id, tags }, ___) => {
+        pushFromResource: async(_, { id, tags }, ctx) => {
             try {
-                const resourceUpdated = await Resource.pushFromResource(id, tags);
+                const resourceUpdated = await ctx.resources.usecases.pushFromResource(
+                    id,
+                    tags,
+                );
                 return {
                     success: true,
                     message: `Push resource ${newResource.id}`,
@@ -56,9 +62,12 @@ const resolvers = {
                 };
             }
         },
-        pullFromResource: async(_, { id, tags }, ___) => {
+        pullFromResource: async(_, { id, tags }, ctx) => {
             try {
-                const resourceUpdated = await Resource.pullFromResource(id, tags);
+                const resourceUpdated = await ctx.resources.usecases.pullFromResource(
+                    id,
+                    tags,
+                );
                 return {
                     success: true,
                     message: `Pull resource ${newResource.id}`,
