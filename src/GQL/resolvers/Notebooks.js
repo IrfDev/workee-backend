@@ -1,24 +1,34 @@
+const { ApolloError } = require('apollo-server');
+
 const resolvers = {
     Notebook: {
         onenoteNotebook: async(notebook, _, ctx) => {
-            const notebookOnenote = ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
-                ctx.microsoftAuth.oauthToken.token.access_token,
-                notebook.onenoteId,
-            );
-            return notebookOnenote.value;
+            if (ctx.microsoftAuth.oauthToken.token.access_token) {
+                const notebookOnenote = ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
+                    ctx.microsoftAuth.oauthToken.token.access_token,
+                    notebook.onenoteId,
+                );
+                return notebookOnenote.value;
+            } else {
+                throw new ApolloError('Unauthorized from Microsoft', 501);
+            }
         },
 
         onenoteSections: async(notebook, _, ctx) => {
-            const notebookSections = notebook.sections;
-            let notebookseFromOnenote = [];
-            notebookSections.map(async(section) => {
-                const sectionOnenote = await ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
-                    ctx.microsoftAuth.oauthToken.token.access_token,
-                    section,
-                );
-                notebookseFromOnenote.push(sectionOnenote);
-            });
-            return notebookseFromOnenote.value;
+            if (ctx.microsoftAuth.oauthToken.token.access_token) {
+                const notebookSections = notebook.sections;
+                let notebookseFromOnenote = [];
+                notebookSections.map(async(section) => {
+                    const sectionOnenote = await ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
+                        ctx.microsoftAuth.oauthToken.token.access_token,
+                        section,
+                    );
+                    notebookseFromOnenote.push(sectionOnenote);
+                });
+                return notebookseFromOnenote.value;
+            } else {
+                throw new ApolloError('Unauthorized from Microsoft', 501);
+            }
         },
     },
     Query: {
@@ -32,21 +42,28 @@ const resolvers = {
             await ctx.notebooks.usecases.getByTag(tags),
 
         getNotebooksFromOnenote: async(_, __, ctx) => {
-            const notebooksArray = await ctx.notebooks.usecases.getNotebooksFromOnenote(
-                ctx.microsoftAuth.oauthToken.token.access_token,
-            );
+            if (ctx.microsoftAuth.oauthToken.token.access_token) {
+                const notebooksArray = await ctx.notebooks.usecases.getNotebooksFromOnenote(
+                    ctx.microsoftAuth.oauthToken.token.access_token,
+                );
 
-            return notebooksArray.value;
+                return notebooksArray.value;
+            } else {
+                throw new ApolloError('Unauthorized from Microsoft', 501);
+            }
         },
 
         getSectionsFromOnenote: async(_, { notebookId }, ctx) => {
-            const sectionsArray = await ctx.notebooks.usecases.getSectionsFromOnenote(
-                ctx.microsoftAuth.oauthToken.token.access_token,
-                notebookId,
-            );
+            if (ctx.microsoftAuth.oauthToken.token.access_token) {
+                const sectionsArray = await ctx.notebooks.usecases.getSectionsFromOnenote(
+                    ctx.microsoftAuth.oauthToken.token.access_token,
+                    notebookId,
+                );
 
-            console.log(sectionsArray);
-            return sectionsArray.value;
+                return sectionsArray.value;
+            } else {
+                throw new ApolloError('Unauthorized from Microsoft', 501);
+            }
         },
     },
     Mutation: {
@@ -61,6 +78,7 @@ const resolvers = {
                 data: updatedNotebook,
             };
         },
+
         createNotebook: async(_, { input }, ctx) => {
             const newNotebook = await ctx.notebooks.usecases.create(input);
             return {
@@ -69,6 +87,7 @@ const resolvers = {
                 data: newNotebook,
             };
         },
+
         pullFromNotebook: async(_, { input, target }, ctx) => {
             console.log(target);
             const updatedNotebook = await ctx.notebooks.usecases.pullFromNotebook(
@@ -81,6 +100,7 @@ const resolvers = {
                 data: updatedNotebook,
             };
         },
+
         pushFromNotebook: async(_, { input, target }, ctx) => {
             const updatedNotebook = await ctx.notebooks.usecases.pushFromNotebook(
                 input.id,

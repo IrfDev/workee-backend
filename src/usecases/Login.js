@@ -16,6 +16,17 @@ async function getLogin(email, password) {
     };
 }
 
+async function isAuthenticated(token) {
+    const isTokenValid = await jwt.verify(token);
+
+    if (!isTokenValid) {
+        throw new Error('Unauthorized');
+    } else {
+        return true;
+    }
+}
+
 module.exports = {
     getLogin,
+    isAuthenticated,
 };
