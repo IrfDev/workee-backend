@@ -1,5 +1,5 @@
-const jwt = require('../lib/jwt');
-const bcrypt = require('../lib/bcrypt');
+const jwt = require('../Lib/jwt');
+const bcrypt = require('../Lib/bcrypt');
 const User = require('../Models/User');
 
 async function getLogin(email, password) {

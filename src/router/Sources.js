@@ -1,6 +1,6 @@
 const express = require('express');
-const streamUseCase = require('../usecases/streams');
-const heroeUseCase = require('../usecases/heroes');
+const streamUseCase = require('../usecases/Streams');
+const heroeUseCase = require('../usecases/Heroes');
 
 const router = express.Router();
 
