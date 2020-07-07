@@ -83,7 +83,6 @@ const typeDefs = gql `
     resourceid: String!
     activeList: String
     tags: [String]
-    id: ID
   }
 
   type BoardDataResponsePayload {

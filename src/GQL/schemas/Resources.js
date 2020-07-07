@@ -2,9 +2,10 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Resource {
+    id: ID!
     name: String!
     tags: [String]
-    website: Website
+    website: String!
   }
 
   type Website {
@@ -31,10 +32,9 @@ const typeDefs = gql `
   }
 
   input CreateResourceInput {
-    title: String!
     name: String!
     tags: [String]
-    website: WebsiteInput
+    website: String!
   }
 
   input WebsiteInput {

@@ -9,13 +9,16 @@ const resolvers = {
 
         feedlyItems: async(stream, _, ctx) => {
             if (!ctx.streams) throw new AuthenticationError('Unauthorized!');
-
-            const feedlyItems = await stream.feedlyItems.map((collectionId) => {
+            const feedlyItems = await stream.feedlyStreamsid.map((collectionId) => {
                 const streamObject = ctx.streams.usecases.getStreamsFromFeedly(
                     collectionId,
                 );
+
+                console.log(streamObject);
                 return streamObject.items;
             });
+
+            console.log(feedlyItems);
 
             return feedlyItems;
         },
@@ -56,7 +59,7 @@ const resolvers = {
                 );
                 return {
                     success: true,
-                    message: `Stream updated ${updatedProject}`,
+                    message: `Stream updated ${updatedStream}`,
                     data: updatedStream,
                 };
             } catch (error) {
@@ -74,7 +77,7 @@ const resolvers = {
                 const createdStream = await ctx.streams.usecases.create(input);
                 return {
                     success: true,
-                    message: `Stream created ${updatedProject}`,
+                    message: `Stream created ${createdStream}`,
                     data: createdStream,
                 };
             } catch (error) {
@@ -95,7 +98,7 @@ const resolvers = {
                 );
                 return {
                     success: true,
-                    message: `Stream updated ${updatedProject}`,
+                    message: `Stream updated ${updatedStream}`,
                     data: updatedStream,
                 };
             } catch (error) {
@@ -116,7 +119,7 @@ const resolvers = {
                 );
                 return {
                     success: true,
-                    message: `Stream updated ${updatedProject}`,
+                    message: `Stream updated ${updatedStream}`,
                     data: updatedStream,
                 };
             } catch (error) {

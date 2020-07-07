@@ -2,7 +2,8 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Task {
-    resource: String!
+    id: ID!
+    resource: resourceTask!
     tags: [String]
     type: String
   }
@@ -29,9 +30,19 @@ const typeDefs = gql `
   }
 
   input createTaskInput {
-    resource: String!
+    resource: resourceInput
     tags: [String]
     type: String
+  }
+
+  input resourceInput {
+    title: String!
+    about: String!
+  }
+
+  type resourceTask {
+    title: String!
+    about: String!
   }
 
   type TaskModifiedCreatedInput {

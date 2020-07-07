@@ -4,7 +4,7 @@ const typeDefs = gql `
   type Project {
     title: String!
     description: String!
-    thumb: String!
+    thumb: String
     weekly: Weekly
     daily: Daily
     sources: Sources
@@ -13,7 +13,7 @@ const typeDefs = gql `
   }
 
   type Weekly {
-    Boards: [Board]
+    boards: [Board]
   }
 
   type Daily {
@@ -42,7 +42,8 @@ const typeDefs = gql `
     createProject(input: CreateProjectInput): ProjectModifiedCreatedInput
     pushInProject(
       id: ID!
-      target: UpdateProjectInput
+      data: String!
+      target: String!
     ): ProjectModifiedCreatedInput
 
     pullInProject(
@@ -54,12 +55,13 @@ const typeDefs = gql `
   input CreateProjectInput {
     title: String!
     description: String!
-    thumb: String!
+    thumb: String
     weekly: WeeklyInput
     daily: DailyInput
     sources: SourcesInput
     resources: ResourcesInput
   }
+
   input UpdateProjectInput {
     id: ID
     title: String
@@ -72,7 +74,7 @@ const typeDefs = gql `
   }
 
   input WeeklyInput {
-    Boards: [String]
+    boards: [String]
   }
 
   input DailyInput {

@@ -4,10 +4,10 @@ const User = require('../Models/User');
 
 async function getLogin(email, password) {
     const userFounded = await User.findOne({ email });
-    if (!userFounded) throw new Error('No se encontro un usuario con este email');
+    if (!userFounded) throw new Error('Invalid email or incorrect password');
 
     const validPassword = await bcrypt.compare(password, userFounded.password);
-    if (!validPassword) throw new Error('Password incorrecto');
+    if (!validPassword) throw new Error('Invalid email or incorrect password');
 
     return {
         usuario: userFounded.email,

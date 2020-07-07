@@ -14,8 +14,9 @@ const resolvers = {
         trelloActiveList: async(board, _, ctx) => {
             if (!ctx.board) throw new ApolloError('Unauthorized!');
             const trelloLists = await ctx.board.usecases.getTrelloListsFromBoard(
-                board.resourceId,
+                board.resourceid,
             );
+            // console.log(trelloLists, board);
 
             return trelloLists.find(
                 (trelloList) => trelloList.id === board.activeList,

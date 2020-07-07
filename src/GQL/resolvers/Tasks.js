@@ -3,23 +3,23 @@ const { AuthenticationError } = require('apollo-server-express');
 const resolvers = {
     Query: {
         getAllTasks: async(_, __, ctx) => {
-            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            if (!ctx.tasks) throw new AuthenticationError('Unauthorized!');
             return await ctx.tasks.usecases.getAll();
         },
 
         getTaskById: async(_, { id }, ctx) => {
-            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            if (!ctx.tasks) throw new AuthenticationError('Unauthorized!');
             return await ctx.tasks.usecases.getById(id);
         },
 
         getTasksByTag: async(_, { tags }, ctx) => {
-            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            if (!ctx.tasks) throw new AuthenticationError('Unauthorized!');
             return await ctx.tasks.usecases.getByTag(tags);
         },
     },
     Mutation: {
         updateTask: async(_, { input }, ctx) => {
-            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            if (!ctx.tasks) throw new AuthenticationError('Unauthorized!');
 
             try {
                 const updatedTask = await ctx.tasks.usecases.updateTask(
@@ -41,7 +41,8 @@ const resolvers = {
         },
 
         createTask: async(_, { input }, ctx) => {
-            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            // console.log(ctx);
+            if (!ctx.tasks) throw new AuthenticationError('Unauthorized!');
 
             try {
                 const createdTask = await ctx.tasks.usecases.create(input);
@@ -60,7 +61,7 @@ const resolvers = {
         },
 
         pushFromTask: async(_, { id, tags }, ctx) => {
-            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            if (!ctx.tasks) throw new AuthenticationError('Unauthorized!');
 
             try {
                 const updatedTask = await ctx.tasks.usecases.pushTag(id, tags);
@@ -79,7 +80,7 @@ const resolvers = {
         },
 
         pullFromTask: async(_, { id, tags }, ctx) => {
-            if (ctx.tasks) throw new AuthenticationError('Unauthorized!');
+            if (!ctx.tasks) throw new AuthenticationError('Unauthorized!');
 
             try {
                 const updatedTask = await ctx.tasks.usecases.deleteTag(id, tags);

@@ -42,6 +42,7 @@ async function getStreamsFromFeedly(id) {
                 Authorization: process.env.FEEDLY_TOKEN,
             },
         });
+        console.log(allEntities);
         return allEntities.data;
     } catch (error) {
         return error.message;

@@ -33,6 +33,7 @@ function pullTagsFromBoard(id, tags) {
 async function getTrelloBoards() {
     try {
         const trelloBoards = await trello.getBoards(TRELLO_MEMBER_ID);
+        // console.log(trelloBoards);
         return trelloBoards;
     } catch (error) {
         return error;

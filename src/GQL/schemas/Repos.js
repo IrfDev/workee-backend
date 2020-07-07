@@ -5,6 +5,7 @@ const typeDefs = gql `
     githubId: String!
     githubRepo: ReposGithubPayload
     technologies: [String]
+    id: ID!
   }
 
   extend type Query {
@@ -19,6 +20,7 @@ const typeDefs = gql `
     name: String
     owner: RepoOwner
     url: String
+    description: String
     language: String
     clone_url: String
   }

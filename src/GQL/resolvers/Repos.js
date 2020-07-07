@@ -4,34 +4,44 @@ const resolvers = {
     Repo: {
         githubRepo: async(repo, _, ctx) => {
             if (!ctx.repos) throw new AuthenticationError('Unauthorized!');
+
             const githubRepos = await ctx.repos.usecases.getAllRepos();
-            return githubRepos.find((githubRepo) => githubRepo.id === repo.githubId);
+            const repoFinded = await githubRepos.find((githubRepo) => {
+                return githubRepo.id.toString() === repo.githubId;
+            });
+            return repoFinded;
         },
     },
+
     Query: {
         getAllRepos: async(_, __, ctx) => {
             if (!ctx.repos) throw new AuthenticationError('Unauthorized!');
+
             return await ctx.repos.usecases.getAll();
         },
 
         getRepoById: async(_, { id }, ctx) => {
             if (!ctx.repos) throw new AuthenticationError('Unauthorized!');
+
             return await ctx.repos.usecases.getById(id);
         },
 
         getReposByTechnology: async(_, { technologies }, ctx) => {
             if (!ctx.repos) throw new AuthenticationError('Unauthorized!');
+
             return await ctx.repos.usecases.getByTechnology(technologies);
         },
 
         getAllGithubRepos: async(_, __, ctx) => {
             if (!ctx.repos) throw new AuthenticationError('Unauthorized!');
+
             return await ctx.repos.usecases.getAllRepos();
         },
     },
     Mutation: {
         updateRepo: async(_, { input }, ctx) => {
             if (!ctx.repos) throw new AuthenticationError('Unauthorized!');
+
             try {
                 const updatedProject = await ctx.repos.usecases.updateRepo(
                     input.id,
@@ -50,6 +60,7 @@ const resolvers = {
                 };
             }
         },
+
         createRepo: async(_, { input }, ctx) => {
             if (!ctx.repos) throw new AuthenticationError('Unauthorized!');
             try {

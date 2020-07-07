@@ -17,9 +17,11 @@ const resolvers = {
             return await ctx.projects.usecases.getByTag(tags);
         },
     },
+
     Mutation: {
         updateProject: async(_, { input }, ctx) => {
-            if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
+            if (!ctx.projects)
+                throw new AuthenticationError('Unauthorized! Login first');
             try {
                 const updatedProject = await ctx.projects.usecases.updateProject(
                     input.id,
@@ -38,6 +40,7 @@ const resolvers = {
                 };
             }
         },
+
         createProject: async(_, { input }, ctx) => {
             if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
             try {
@@ -55,10 +58,15 @@ const resolvers = {
                 };
             }
         },
-        pushInProject: async(_, { id, target }, ctx) => {
+
+        pushInProject: async(_, { id, data, target }, ctx) => {
             if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
             try {
-                const projectUpdated = await ctx.projects.usecases.pushIds(id, target);
+                const projectUpdated = await ctx.projects.usecases.pushIds(
+                    id,
+                    data,
+                    target,
+                );
                 return {
                     success: true,
                     message: `Project updated ${projectUpdated}`,
@@ -72,6 +80,7 @@ const resolvers = {
                 };
             }
         },
+
         pullInProject: async(_, { id, target }, ctx) => {
             if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
             try {

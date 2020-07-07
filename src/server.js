@@ -6,6 +6,8 @@ const express = require('express');
 const passport = require('passport');
 const passportSetup = require('./Lib/passport');
 
+const cors = require('cors');
+
 const cookieParser = require('cookie-parser');
 
 const app = express();
@@ -26,8 +28,15 @@ app.use(express.json());
 app.use(passport.initialize(passportSetup));
 app.use(passport.session());
 
+var corsOptions = {
+    credentials: true, // <-- REQUIRED backend setting
+    origin: 'http://localhost:3000',
+};
+
+// app.use(cors(corsOptions));
+
 const apolloServer = require('./GQL/server');
-apolloServer.applyMiddleware({ app });
+apolloServer.applyMiddleware({ app, cors: corsOptions });
 console.log('🚀 Apollo server running on path /graphql');
 
 require('./Lib/router')(app);

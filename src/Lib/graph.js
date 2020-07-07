@@ -38,15 +38,16 @@ module.exports = {
     getSections: async function(accessToken, notebookId) {
         const client = getAuthenticatedClient(accessToken);
         const notebooks = await client
-            .api(`/me/onenote/notebooks/${notebookId}/sections`)
+            .api(`/me/onenote/notebooks/${notebookId}/sectionGroups`)
             .get();
 
         return notebooks;
     },
+
     getSectionById: async function(accessToken, sectionId) {
         const client = getAuthenticatedClient(accessToken);
         const notebooks = await client
-            .api(`/me/onenote/sections/${sectionId}`)
+            .api(`/me/onenote/sectionGroups/${sectionId}`)
             .get();
 
         return notebooks;

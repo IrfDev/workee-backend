@@ -34,6 +34,7 @@ const resolvers = {
             return notebookseFromOnenote.value;
         },
     },
+
     Query: {
         getAllNotebooks: async(_, __, ctx) => {
             // This context object was build in the server when you Authenticate

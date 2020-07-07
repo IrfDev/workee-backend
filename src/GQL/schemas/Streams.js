@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Stream {
+    id: ID!
     feedlyStreamsid: [String!]
     feedlyStreams: FeedFromFeedlyPayload
     feedlyItems: [FeedItem]
@@ -17,7 +18,7 @@ const typeDefs = gql `
   }
 
   type FeedFromFeedlyPayload {
-    id: ID!
+    id: ID
     title: String
     label: String
     items: [FeedItem]
@@ -25,37 +26,37 @@ const typeDefs = gql `
   }
 
   type FeedItem {
-    id: String!
-    title: String!
-    keywords: [String!]
-    summary: FeedItemSummary!
-    content: FeedItemContent!
-    label: String!
-    author: String!
-    canonicalUrl: String!
-    origin: FeedItemOrigin!
-    visual: FeedItemVisual!
-    categories: [FeedItemCategory!]
+    id: String
+    title: String
+    keywords: [String]
+    summary: FeedItemSummary
+    content: FeedItemContent
+    label: String
+    author: String
+    canonicalUrl: String
+    origin: FeedItemOrigin
+    visual: FeedItemVisual
+    categories: [FeedItemCategory]
   }
 
   type FeedItemSummary {
-    content: String!
+    content: String
   }
 
   type FeedItemCategory {
-    id: String!
-    label: String!
+    id: String
+    label: String
   }
 
   type FeedItemOrigin {
-    title: String!
-    htmlUrl: String!
+    title: String
+    htmlUrl: String
   }
 
   type FeedItemVisual {
-    url: String!
-    width: Int!
-    Height: Int!
+    url: String
+    width: Int
+    Height: Int
   }
 
   type FeedItemContent {
@@ -63,7 +64,7 @@ const typeDefs = gql `
   }
 
   type FeedFromStreamPayload {
-    id: ID!
+    id: ID
     title: String
     topics: [String]
     visualUrl: String
@@ -79,7 +80,7 @@ const typeDefs = gql `
   }
 
   input UpdateStreamInput {
-    id: ID!
+    id: ID
     tags: [String]
     feedlyStreamsid: [String!]
   }
