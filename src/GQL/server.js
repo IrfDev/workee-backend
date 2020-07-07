@@ -20,7 +20,7 @@ const server = new ApolloServer({
         let auth = await context.auth.usecases.isAuthenticated(
             req.headers.authorization,
         );
-        console.log(req.user);
+        console.log('req.user');
         if (auth === true) {
             return {
                 ...context,
@@ -33,11 +33,11 @@ const server = new ApolloServer({
             };
         }
     },
-    // playground: {
-    //     settings: {
-    //         'request.credentials': 'include',
-    //     },
-    // },
+    playground: {
+        settings: {
+            'request.credentials': 'include',
+        },
+    },
     plugins: [responseCachePlugin()],
 });
 

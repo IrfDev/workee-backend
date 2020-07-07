@@ -36,7 +36,10 @@ var corsOptions = {
 // app.use(cors(corsOptions));
 
 const apolloServer = require('./GQL/server');
-apolloServer.applyMiddleware({ app, cors: corsOptions });
+apolloServer.applyMiddleware({
+    app,
+    cors: corsOptions,
+});
 console.log('🚀 Apollo server running on path /graphql');
 
 require('./Lib/router')(app);

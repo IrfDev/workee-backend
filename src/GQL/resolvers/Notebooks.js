@@ -4,34 +4,33 @@ const resolvers = {
     Notebook: {
         onenoteNotebook: async(notebook, _, ctx) => {
             // Check if already have Microsoft Graph Token {This token come from passport session}
-            if (!ctx.microsoftAuth.oauthToken)
+            if (!ctx.microsoftAuth)
                 throw new AuthenticationError('Unauthorized from Microsoft');
 
-            const notebookOnenote = ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
+            const notebookOnenote = await ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
                 ctx.microsoftAuth.oauthToken.token.access_token,
                 notebook.onenoteId,
             );
-
-            return notebookOnenote.value;
+            return notebookOnenote;
         },
 
         onenoteSections: async(notebook, _, ctx) => {
-            if (!ctx.microsoftAuth.oauthToken)
+            if (!ctx.microsoftAuth)
                 throw new AuthenticationError('Unauthorized from Microsoft');
 
             const notebookSections = notebook.sections;
 
-            let notebookseFromOnenote = [];
-
-            notebookSections.map(async(section) => {
-                const sectionOnenote = await ctx.notebooks.usecases.getNotebooksByIdFromOnenote(
+            let notebooksFromOnenote = await notebookSections.map((section) => {
+                const sectionOnenote = ctx.notebooks.usecases.getSectionFromOneNote(
                     ctx.microsoftAuth.oauthToken.token.access_token,
                     section,
                 );
-                notebookseFromOnenote.push(sectionOnenote);
-            });
 
-            return notebookseFromOnenote.value;
+                return sectionOnenote;
+            });
+            console.log('[Finished] Resolver', notebooksFromOnenote);
+
+            return notebooksFromOnenote;
         },
     },
 
@@ -53,7 +52,7 @@ const resolvers = {
         },
 
         getNotebooksFromOnenote: async(_, __, ctx) => {
-            if (!ctx.microsoftAuth.oauthToken.token.access_token)
+            if (!ctx.microsoftAuth)
                 throw new AuthenticationError('Unauthorized from Microsoft');
 
             const notebooksArray = await ctx.notebooks.usecases.getNotebooksFromOnenote(
@@ -64,7 +63,7 @@ const resolvers = {
         },
 
         getSectionsFromOnenote: async(_, { notebookId }, ctx) => {
-            if (!ctx.microsoftAuth.oauthToken.token.access_token)
+            if (!ctx.microsoftAuth)
                 throw new AuthenticationError('Unauthorized from Microsoft');
 
             const sectionsArray = await ctx.notebooks.usecases.getSectionsFromOnenote(

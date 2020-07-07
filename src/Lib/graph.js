@@ -31,7 +31,6 @@ module.exports = {
     getNotebookById: async function(accessToken, id) {
         const client = getAuthenticatedClient(accessToken);
         const notebooks = await client.api(`/me/onenote/notebooks/${id}`).get();
-
         return notebooks;
     },
 
@@ -40,6 +39,7 @@ module.exports = {
         const notebooks = await client
             .api(`/me/onenote/notebooks/${notebookId}/sectionGroups`)
             .get();
+        console.log('[Finished] Usecase graph:', notebooks);
 
         return notebooks;
     },
