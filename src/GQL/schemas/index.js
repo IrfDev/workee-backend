@@ -1,21 +1,21 @@
-const { makeExecutableSchema } = require('apollo-server-express');
+const boardsSchema = require('./Boards');
+const heroeSchema = require('./Heroes');
+const notebookSchema = require('./Notebooks');
+const projectSchema = require('./Projects');
+const RepoSchema = require('./Repos');
+const ResourceSchema = require('./Resources');
+const StreamSchema = require('./Streams');
+const TaskSchema = require('./Tasks');
+const AuthSchema = require('./Auth');
 
-const boardsSchema = require('../schemas/Boards');
-const heroeSchema = require('../schemas/Heroes');
-const notebookSchema = require('../schemas/Notebooks');
-const projectSchema = require('../schemas/Projects');
-const RepoSchema = require('../schemas/Repos');
-const ResourceSchema = require('../schemas/Resources');
-const StreamSchema = require('../schemas/Streams');
-const TaskSchema = require('../schemas/Tasks');
-
-module.exports = {
-    ...boardsSchema,
-    ...heroeSchema,
-    ...notebookSchema,
-    ...projectSchema,
-    ...TaskSchema,
-    ...StreamSchema,
-    ...ResourceSchema,
-    ...RepoSchema,
-};
+module.exports = [
+    boardsSchema,
+    heroeSchema,
+    notebookSchema,
+    projectSchema,
+    RepoSchema,
+    ResourceSchema,
+    StreamSchema,
+    TaskSchema,
+    AuthSchema,
+];

@@ -2,38 +2,62 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Notebook {
-    oneNoteId: String
+    onenoteId: String!
+    onenoteNotebook: NotebookFromOneNotePayload
+    onenoteSections: [NotebookFromOneNotePayload]
     sections: [String]
     tags: [String]
+    id: ID!
     topics: [String]
   }
 
-  type Query {
+  extend type Query {
     getAllNotebooks: [Notebook]
     getNotebookById(id: ID!): Notebook
     getNotebooksByTags(tags: TagsInput): [Notebook]
-  }
-  input TagsInput {
-    tags: [String!]
+    getNotebooksFromOnenote: [NotebookFromOneNotePayload]
+    getSectionsFromOnenote(notebookId: String!): [NotebookFromOneNotePayload]
   }
 
-  type Mutation {
+  type NotebookFromOneNotePayload {
+    id: ID!
+    displayName: String
+    sectionsUrl: String
+    links: LinksOnenote
+  }
+
+  type LinksOnenote {
+    oneNoteClientUrl: Href
+  }
+
+  type Href {
+    href: String
+  }
+
+  extend type Mutation {
     updateNotebook(input: UpdateNotebookInput): NotebookUpdateResponsePayload
-    updateNotebookTags(
+    pullFromNotebook(
       input: UpdateNotebookInput
+      target: UpdateNotebookInput
+    ): NotebookUpdateResponsePayload
+    pushFromNotebook(
+      input: UpdateNotebookInput
+      target: UpdateNotebookInput
     ): NotebookUpdateResponsePayload
     createNotebook(input: CreateNotebookInput): NotebookCreatedResponsePayload
   }
 
   input UpdateNotebookInput {
-    id: ID!
+    id: ID
+    onenoteId: ID
     sections: [String]
     tags: [String]
     topics: [String]
   }
+
   input CreateNotebookInput {
-    id: ID!
     sections: [String!]
+    onenoteId: ID!
     tags: [String!]
     topics: [String!]
   }

@@ -6,7 +6,19 @@ const feedlyUrl = 'https://cloud.feedly.com/v3';
 //     Authorization: process.env.FEEDLY_TOKEN,
 // };
 
-async function getAll() {
+function getAll() {
+    return streamModel.find();
+}
+
+function getById(id) {
+    return streamModel.findById(id);
+}
+
+function getByTag(tags) {
+    return streamModel.find({ tags });
+}
+
+async function getFeedsFromFeedly() {
     try {
         const requestUrl = `${feedlyUrl}/collections`;
         const allStreamsResponse = await axios.get(requestUrl, {
@@ -14,14 +26,13 @@ async function getAll() {
                 Authorization: process.env.FEEDLY_TOKEN,
             },
         });
-        console.log(allStreamsResponse);
         return allStreamsResponse.data;
     } catch (error) {
         return error.message;
     }
 }
 
-async function getById(id) {
+async function getStreamsFromFeedly(id) {
     try {
         const allEntities = await axios.get(`${feedlyUrl}/streams/contents`, {
             params: {
@@ -31,6 +42,7 @@ async function getById(id) {
                 Authorization: process.env.FEEDLY_TOKEN,
             },
         });
+        console.log(allEntities);
         return allEntities.data;
     } catch (error) {
         return error.message;
@@ -41,16 +53,16 @@ function create(newstream) {
     return streamModel.create(newstream);
 }
 
-function updateStream(name, object) {
-    return streamModel.findAndUpdate({ resourcesid: name }, object);
+function updateStream(id, object) {
+    return streamModel.findByIdAndUpdate(id, object);
 }
 
-function pullFromStream(streamId, tag) {
-    return streamModel.findAndUpdate(streamId, { $pull: { tags: tag } });
+function pullFromStream(id, object) {
+    return streamModel.findByIdAndUpdate(id, { $pull: object });
 }
 
-function pushFromStream(streamId, tag) {
-    return streamModel.findAndUpdate(streamId, { $push: { tags: tag } });
+function pushFromStream(id, obje) {
+    return streamModel.findByIdAndUpdate(id, { $push: object });
 }
 
 module.exports = {
@@ -60,4 +72,7 @@ module.exports = {
     updateStream,
     pullFromStream,
     pushFromStream,
+    getFeedsFromFeedly,
+    getStreamsFromFeedly,
+    getByTag,
 };

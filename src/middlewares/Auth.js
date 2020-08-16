@@ -1,4 +1,4 @@
-const jwt = require('../lib/jwt');
+const jwt = require('../Lib/jwt');
 
 async function auth(request, response, next) {
     try {

@@ -24,7 +24,31 @@ module.exports = {
     getNotebooks: async function(accessToken) {
         const client = getAuthenticatedClient(accessToken);
         const notebooks = await client.api('/me/onenote/notebooks').get();
-        console.log('Notebooks usecases', notebooks);
+
+        return notebooks;
+    },
+
+    getNotebookById: async function(accessToken, id) {
+        const client = getAuthenticatedClient(accessToken);
+        const notebooks = await client.api(`/me/onenote/notebooks/${id}`).get();
+        return notebooks;
+    },
+
+    getSections: async function(accessToken, notebookId) {
+        const client = getAuthenticatedClient(accessToken);
+        const notebooks = await client
+            .api(`/me/onenote/notebooks/${notebookId}/sectionGroups`)
+            .get();
+        console.log('[Finished] Usecase graph:', notebooks);
+
+        return notebooks;
+    },
+
+    getSectionById: async function(accessToken, sectionId) {
+        const client = getAuthenticatedClient(accessToken);
+        const notebooks = await client
+            .api(`/me/onenote/sectionGroups/${sectionId}`)
+            .get();
 
         return notebooks;
     },

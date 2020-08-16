@@ -2,15 +2,16 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Task {
-    resource: String!
+    id: ID!
+    resource: resourceTask!
     tags: [String]
     type: String
   }
 
   type Query {
     getAllTasks: [Task]
-    taskById(id: ID!): Task
-    tasksByTag(tags: TagsInput): Task
+    getTaskById(id: ID!): Task
+    getTasksByTag(tags: [String!]): [Task]
   }
 
   input TagsInput {
@@ -20,6 +21,8 @@ const typeDefs = gql `
   type Mutation {
     updateTask(input: UpdateTaskInput): TaskModifiedCreatedInput
     createTask(input: createTaskInput): TaskModifiedCreatedInput
+    pushFromTask(id: ID!, tags: [String!]): TaskModifiedCreatedInput
+    pullFromTask(id: ID!, tags: [String!]): TaskModifiedCreatedInput
   }
   input UpdateTaskInput {
     id: ID!
@@ -27,9 +30,19 @@ const typeDefs = gql `
   }
 
   input createTaskInput {
-    resource: String!
+    resource: resourceInput
     tags: [String]
     type: String
+  }
+
+  input resourceInput {
+    title: String!
+    about: String!
+  }
+
+  type resourceTask {
+    title: String!
+    about: String!
   }
 
   type TaskModifiedCreatedInput {

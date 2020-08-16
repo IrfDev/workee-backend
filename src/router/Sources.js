@@ -1,6 +1,6 @@
 const express = require('express');
-const streamUseCase = require('../usecases/streams');
-const heroeUseCase = require('../usecases/heroes');
+const streamUseCase = require('../usecases/Streams');
+const heroeUseCase = require('../usecases/Heroes');
 
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.get('/', async(req, res) => {
     }
 });
 
-router.get('/entries', async(req, res) => {
+router.post('/entries', async(req, res) => {
     try {
         const streamsIds = req.body;
         const entries = await streamsIds.map((id) => {

@@ -5,23 +5,31 @@ function getAll() {
 }
 
 function getByName(name) {
-    return heroModel.findOne({ name });
+    return heroModel.find({ name });
+}
+
+function getByTag(tags) {
+    return heroModel.find({ tags });
+}
+
+function getById(id) {
+    return heroModel.findById(id);
 }
 
 function create(newhero) {
     return heroModel.create(newhero);
 }
 
-function updatehero(name, object, method) {
-    return heroModel.findAndUpdate({ name }, object);
+function updateHero(id, object) {
+    return heroModel.findByIdAndUpdate(id, object);
 }
 
-function pushTagsHero(name, object) {
-    return heroModel.findAndUpdate({ name }, { $push: { tags: object } });
+function pushTagsHero(id, tags) {
+    return heroModel.findByIdAndUpdate(id, { $push: { tags } });
 }
 
-function pullTagsHero(name, object) {
-    return heroModel.findAndUpdate({ name }, { $pull: { tags: object } });
+function pullTagsHero(id, object) {
+    return heroModel.findByIdAndUpdate(id, { $pullAll: { tags: object } });
 }
 
 function pullLinkHero(name, object) {
@@ -32,8 +40,10 @@ module.exports = {
     getAll,
     create,
     pushTagsHero,
+    getByTag,
     getByName,
-    updatehero,
+    updateHero,
+    getById,
     pullTagsHero,
     pullLinkHero,
 };

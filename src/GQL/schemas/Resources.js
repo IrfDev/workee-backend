@@ -2,9 +2,10 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Resource {
+    id: ID!
     name: String!
     tags: [String]
-    website: Website
+    website: String!
   }
 
   type Website {
@@ -12,19 +13,17 @@ const typeDefs = gql `
     urlLink: String
   }
 
-  type Query {
+  extend type Query {
     getAllResources: [Resource]
-    resourceById(id: ID!): Resource
-    resourcesByTag(tags: TagsInput): [Resource]
+    getResourceById(id: ID!): Resource
+    getResourcesByTags(tags: TagsInput): [Resource]
   }
 
-  input TagsInput {
-    tags: [String!]
-  }
-
-  type Mutation {
+  extend type Mutation {
     updateResource(input: UpdateResourceInput): ResourceModifiedCreatedInput
     createResource(input: CreateResourceInput): ResourceModifiedCreatedInput
+    pushFromResource(id: ID!, tags: [String!]): ResourceModifiedCreatedInput
+    pullFromResource(id: ID!, tags: [String!]): ResourceModifiedCreatedInput
   }
 
   input UpdateResourceInput {
@@ -33,13 +32,12 @@ const typeDefs = gql `
   }
 
   input CreateResourceInput {
-    title: String!
     name: String!
     tags: [String]
-    website: WebsiteInput
+    website: String!
   }
 
-  type WebsiteInput {
+  input WebsiteInput {
     site: String
     urlLink: String
   }

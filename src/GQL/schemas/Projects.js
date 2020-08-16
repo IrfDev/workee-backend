@@ -4,69 +4,69 @@ const typeDefs = gql `
   type Project {
     title: String!
     description: String!
-    thumb: String!
-    description: [String]
+    thumb: String
     weekly: Weekly
     daily: Daily
     sources: Sources
     resources: Resources
+    id: ID!
   }
 
   type Weekly {
-    Boards: [String]
+    boards: [Board]
   }
 
   type Daily {
-    tasks: [String]
+    tasks: [Task]
   }
 
   type Sources {
-    streams: [String]
-    heroes: [String]
+    streams: [Stream]
+    heroes: [Heroe]
   }
 
   type Resources {
-    repos: [String]
-    notebooks: [String]
-    resources: [String]
+    repos: [Repo]
+    notebooks: [Notebook]
+    resources: [Resource]
   }
 
-  type Query {
+  extend type Query {
     getAllProjects: [Project]
-    projectById(id: ID!): Project
-    projectsByTag(tags: TagsInput): [Project]
+    getProjectById(id: ID!): Project
+    getProjectsByTags(tags: TagsInput): [Project]
   }
 
-  input TagsInput {
-    tags: [String!]
-  }
-
-  type Mutation {
+  extend type Mutation {
     updateProject(input: UpdateProjectInput): ProjectModifiedCreatedInput
     createProject(input: CreateProjectInput): ProjectModifiedCreatedInput
-  }
+    pushInProject(
+      id: ID!
+      data: String!
+      target: String!
+    ): ProjectModifiedCreatedInput
 
-  input UpdateProjectInput {
-    id: ID!
-    tags: [String]
+    pullInProject(
+      id: ID!
+      target: UpdateProjectInput
+    ): ProjectModifiedCreatedInput
   }
 
   input CreateProjectInput {
     title: String!
     description: String!
-    thumb: String!
-    description: [String]
+    thumb: String
     weekly: WeeklyInput
     daily: DailyInput
     sources: SourcesInput
     resources: ResourcesInput
   }
+
   input UpdateProjectInput {
-    id: ID!
+    id: ID
     title: String
     description: String
     thumb: String
-    description: [String]
     weekly: WeeklyInput
     daily: DailyInput
     sources: SourcesInput
@@ -74,7 +74,7 @@ const typeDefs = gql `
   }
 
   input WeeklyInput {
-    Boards: [String]
+    boards: [String]
   }
 
   input DailyInput {

@@ -15,7 +15,6 @@ const ProjectSchema = new mongoose.Schema({
     },
     thumb: {
         type: String,
-        required: true,
     },
     weekly: {
         type: Object,

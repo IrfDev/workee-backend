@@ -1,7 +1,7 @@
 const express = require('express');
 const resourceData = require('../usecases/Resources');
-const notebookUsecase = require('../usecases/notebooks');
-const repoUsecase = require('../usecases/repos');
+const notebookUsecase = require('../usecases/Notebooks');
+const repoUsecase = require('../usecases/Repos');
 
 const router = express.Router();
 

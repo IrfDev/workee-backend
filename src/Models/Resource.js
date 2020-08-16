@@ -10,8 +10,7 @@ const ResourceSchema = new mongoose.Schema({
         required: true,
     }, ],
     website: {
-        site: String,
-        urlLink: String,
+        type: String,
     },
 });
 

@@ -3,22 +3,42 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql `
   type Repo {
     githubId: String!
+    githubRepo: ReposGithubPayload
     technologies: [String]
+    id: ID!
   }
 
-  type Query {
+  extend type Query {
     getAllRepos: [Repo]
-    repoById(id: ID!): Repo
-    reposByTechnology(technologies: TechnologiesInput): [Repo]
+    getRepoById(id: ID!): Repo
+    getReposByTechnology(technologies: TechnologiesInput): [Repo]
+    getAllGithubRepos: [ReposGithubPayload]
+  }
+
+  type ReposGithubPayload {
+    id: ID!
+    name: String
+    owner: RepoOwner
+    url: String
+    description: String
+    language: String
+    clone_url: String
+  }
+
+  type RepoOwner {
+    login: String
+    avatar_url: String
   }
 
   input TechnologiesInput {
     technologies: [String!]
   }
 
-  type Mutation {
+  extend type Mutation {
     updateRepo(input: UpdateRepoInput): RepoModifiedCreatedInput
     createRepo(input: createRepoInput): RepoModifiedCreatedInput
+    pushFromRepo(id: ID!, technologies: [String!]): RepoModifiedCreatedInput
+    pullFromRepo(id: ID!, technologies: [String!]): RepoModifiedCreatedInput
   }
   input UpdateRepoInput {
     id: ID!

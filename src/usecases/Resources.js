@@ -5,7 +5,11 @@ function getAll() {
 }
 
 function getById(id) {
-    return resourceModel.find({ id });
+    return resourceModel.findById(id);
+}
+
+function getByTag(tag) {
+    return resourceModel.find({ tags: tag });
 }
 
 function create(newresource) {
@@ -13,15 +17,17 @@ function create(newresource) {
 }
 
 function updateresource(name, object) {
-    return resourceModel.findAndUpdate({ name }, object);
+    return resourceModel.findByIdAndUpdate({ name }, object);
 }
 
 function pullFromResource(resourceId, tag) {
-    return resourceModel.findAndUpdate(resourceId, { $pull: { tags: tag } });
+    return resourceModel.findByIdAndUpdate(resourceId, { $pull: { tags: tag } });
 }
 
 function pushFromResource(resourceId, tag) {
-    return resourceModel.findAndUpdate(resourceId, { $push: { tags: tag } });
+    return resourceModel.findByIdAndUpdate(resourceId, {
+        $push: { tags: tag },
+    });
 }
 
 module.exports = {
@@ -31,4 +37,5 @@ module.exports = {
     updateresource,
     pushFromResource,
     pullFromResource,
+    getByTag,
 };

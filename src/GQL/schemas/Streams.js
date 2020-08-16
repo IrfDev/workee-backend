@@ -2,34 +2,90 @@ const { gql } = require('apollo-server-express');
 
 const typeDefs = gql `
   type Stream {
-    streamId: String!
+    id: ID!
     feedlyStreamsid: [String!]
+    feedlyStreams: FeedFromFeedlyPayload
+    feedlyItems: [FeedItem]
     tags: [String!]
   }
 
-  type Query {
+  extend type Query {
     getAllStreams: [Stream]
-    streamById(id: ID!): Stream
-    streamsByTag(tags: TagsInput): [Stream]
+    getStreamById(id: ID!): Stream
+    getStreamsByTag(tags: [String]): [Stream]
+    getFeedsFromFeedly: [FeedFromFeedlyPayload]
+    getStreamsFromFeedly(id: ID!): [FeedFromStreamPayload]
   }
 
-  input TagsInput {
-    tags: [String!]
+  type FeedFromFeedlyPayload {
+    id: ID
+    title: String
+    label: String
+    items: [FeedItem]
+    feeds: [FeedItem]
   }
 
-  type Mutation {
+  type FeedItem {
+    id: String
+    title: String
+    keywords: [String]
+    summary: FeedItemSummary
+    content: FeedItemContent
+    label: String
+    author: String
+    canonicalUrl: String
+    origin: FeedItemOrigin
+    visual: FeedItemVisual
+    categories: [FeedItemCategory]
+  }
+
+  type FeedItemSummary {
+    content: String
+  }
+
+  type FeedItemCategory {
+    id: String
+    label: String
+  }
+
+  type FeedItemOrigin {
+    title: String
+    htmlUrl: String
+  }
+
+  type FeedItemVisual {
+    url: String
+    width: Int
+    Height: Int
+  }
+
+  type FeedItemContent {
+    content: String
+  }
+
+  type FeedFromStreamPayload {
+    id: ID
+    title: String
+    topics: [String]
+    visualUrl: String
+    iconUrl: String
+    description: String
+  }
+
+  extend type Mutation {
     updateStream(input: UpdateStreamInput): StreamModifiedCreatedInput
     createStream(input: CreateStreamInput): StreamModifiedCreatedInput
+    pushFromStream(id: ID!, tags: [String!]): StreamModifiedCreatedInput
+    pullFromStream(id: ID!, tags: [String!]): StreamModifiedCreatedInput
   }
 
   input UpdateStreamInput {
-    id: ID!
+    id: ID
     tags: [String]
     feedlyStreamsid: [String!]
   }
 
   input CreateStreamInput {
-    streamId: String!
     feedlyStreamsid: [String!]
     tags: [String!]
   }
