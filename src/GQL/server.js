@@ -8,37 +8,36 @@ const resolvers = require('./resolvers/index');
 const context = require('./context');
 
 const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
+  typeDefs,
+  resolvers,
 });
 
 const server = new ApolloServer({
-    schema,
-    resolvers,
-    context: async({ req }) => {
-        if (!req.headers.authorization) return { auth: context.auth };
-        let auth = await context.auth.usecases.isAuthenticated(
-            req.headers.authorization,
-        );
-        console.log('req.user');
-        if (auth === true) {
-            return {
-                ...context,
-                token: req.headers.authorization,
-                microsoftAuth: req.user,
-            };
-        } else {
-            return {
-                auth: context.auth,
-            };
-        }
+  schema,
+  resolvers,
+  context: async ({ req }) => {
+    if (!req.headers.authorization) return { auth: context.auth };
+    let auth = await context.auth.usecases.isAuthenticated(
+      req.headers.authorization,
+    );
+    if (auth === true) {
+      return {
+        ...context,
+        token: req.headers.authorization,
+        microsoftAuth: req.user,
+      };
+    } else {
+      return {
+        auth: context.auth,
+      };
+    }
+  },
+  playground: {
+    settings: {
+      'request.credentials': 'include',
     },
-    playground: {
-        settings: {
-            'request.credentials': 'include',
-        },
-    },
-    plugins: [responseCachePlugin()],
+  },
+  plugins: [responseCachePlugin()],
 });
 
 module.exports = server;

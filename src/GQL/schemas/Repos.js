@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server-express');
 
-const typeDefs = gql `
+const typeDefs = gql`
   type Repo {
     githubId: String!
     githubRepo: ReposGithubPayload
@@ -22,6 +22,7 @@ const typeDefs = gql `
     url: String
     description: String
     language: String
+    html_url: String
     clone_url: String
   }
 

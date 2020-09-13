@@ -1,69 +1,67 @@
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-
 var graph = require('@microsoft/microsoft-graph-client');
 require('isomorphic-fetch');
 
+/* First of all you have to made a login request to the client before get any resource. 
+The forwards requests it'll be avoided
+*/
+
 module.exports = {
-    getUserDetails: async function(accessToken) {
-        const client = getAuthenticatedClient(accessToken);
+  getUserDetails: async function (accessToken) {
+    const client = getAuthenticatedClient(accessToken);
 
-        const user = await client.api('/me').get();
-        return user;
-    },
+    const user = await client.api('/me').get();
+    return user;
+  },
 
-    // <GetEventsSnippet>
-    getEvents: async function(accessToken) {
-        const client = getAuthenticatedClient(accessToken);
+  getEvents: async function (accessToken) {
+    const client = getAuthenticatedClient(accessToken);
 
-        const events = await client.api('/me/events').get();
+    const events = await client.api('/me/events').get();
 
-        return events;
-    },
+    return events;
+  },
 
-    getNotebooks: async function(accessToken) {
-        const client = getAuthenticatedClient(accessToken);
-        const notebooks = await client.api('/me/onenote/notebooks').get();
+  getNotebooks: async function (accessToken) {
+    const client = getAuthenticatedClient(accessToken);
+    const notebooks = await client.api('/me/onenote/notebooks').get();
 
-        return notebooks;
-    },
+    return notebooks;
+  },
 
-    getNotebookById: async function(accessToken, id) {
-        const client = getAuthenticatedClient(accessToken);
-        const notebooks = await client.api(`/me/onenote/notebooks/${id}`).get();
-        return notebooks;
-    },
+  getNotebookById: async function (accessToken, id) {
+    const client = getAuthenticatedClient(accessToken);
+    const notebooks = await client.api(`/me/onenote/notebooks/${id}`).get();
+    return notebooks;
+  },
 
-    getSections: async function(accessToken, notebookId) {
-        const client = getAuthenticatedClient(accessToken);
-        const notebooks = await client
-            .api(`/me/onenote/notebooks/${notebookId}/sectionGroups`)
-            .get();
-        console.log('[Finished] Usecase graph:', notebooks);
+  getSections: async function (accessToken, notebookId) {
+    const client = getAuthenticatedClient(accessToken);
+    const notebooks = await client
+      .api(`/me/onenote/notebooks/${notebookId}/sectionGroups`)
+      .get();
+    console.log('[Finished] Usecase graph:', notebooks);
 
-        return notebooks;
-    },
+    return notebooks;
+  },
 
-    getSectionById: async function(accessToken, sectionId) {
-        const client = getAuthenticatedClient(accessToken);
-        const notebooks = await client
-            .api(`/me/onenote/sectionGroups/${sectionId}`)
-            .get();
+  getSectionById: async function (accessToken, sectionId) {
+    const client = getAuthenticatedClient(accessToken);
+    const notebooks = await client
+      .api(`/me/onenote/sectionGroups/${sectionId}`)
+      .get();
 
-        return notebooks;
-    },
-    // </GetEventsSnippet>
+    return notebooks;
+  },
 };
 
 function getAuthenticatedClient(accessToken) {
-    // Initialize Graph client
-    const client = graph.Client.init({
-        // Use the provided access token to authenticate
-        // requests
-        authProvider: (done) => {
-            done(null, accessToken);
-        },
-    });
+  const client = graph.Client.init({
+    // Use the provided access token to authenticate
+    // requests
+    authProvider: (done) => {
+      done(null, accessToken);
+    },
+  });
 
-    return client;
+  return client;
 }

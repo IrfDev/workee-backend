@@ -1,21 +1,20 @@
 {
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#ffa755",
-    "activityBar.activeBorder": "#00803d",
-    "activityBar.background": "#ffa755",
+    "activityBar.activeBackground": "#46e6d6",
+    "activityBar.activeBorder": "#da57e8",
+    "activityBar.background": "#46e6d6",
     "activityBar.foreground": "#15202b",
     "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#00803d",
-    "activityBarBadge.foreground": "#e7e7e7",
-    "statusBar.background": "#ff8d22",
-    "statusBar.border": "#ff8d22",
+    "activityBarBadge.background": "#da57e8",
+    "activityBarBadge.foreground": "#15202b",
+    "statusBar.background": "#1edbc8",
     "statusBar.foreground": "#15202b",
-    "statusBarItem.hoverBackground": "#ee7300",
-    "titleBar.activeBackground": "#ff8d22",
+    "statusBarItem.hoverBackground": "#18ae9f",
+    "titleBar.activeBackground": "#1edbc8",
     "titleBar.activeForeground": "#15202b",
-    "titleBar.border": "#ff8d22",
-    "titleBar.inactiveBackground": "#ff8d2299",
+    "titleBar.inactiveBackground": "#1edbc899",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.color": "#ff8d22"
+  "window.title": "Workee Backend 👨🏻‍💻 ${separator}${activeEditorMedium}",
+  "peacock.color": "#1EDBC8"
 }
