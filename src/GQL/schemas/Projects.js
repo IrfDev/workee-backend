@@ -39,7 +39,9 @@ const typeDefs = gql`
 
   extend type Mutation {
     updateProject(input: UpdateProjectInput): ProjectModifiedCreatedInput
+
     createProject(input: CreateProjectInput): ProjectModifiedCreatedInput
+
     pushInProject(
       id: ID!
       data: String!
@@ -48,8 +50,11 @@ const typeDefs = gql`
 
     pullInProject(
       id: ID!
-      target: UpdateProjectInput
+      target: String!
+      resourceId: String!
     ): ProjectModifiedCreatedInput
+
+    deleteProject(title: String!, id: ID!): ProjectModifiedCreatedInput
   }
 
   input CreateProjectInput {

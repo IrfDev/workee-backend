@@ -30,7 +30,7 @@ app.use(passport.session());
 
 var corsOptions = {
   credentials: true, // <-- REQUIRED backend setting
-  //origin: 'http://localhost:9000',
+  //origin: 'https://workee.site',
   origin: 'http://localhost:3000',
 };
 
