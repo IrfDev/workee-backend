@@ -12,6 +12,18 @@ const typeDefs = gql`
     id: ID!
   }
 
+  type updatedProjectResponse {
+    title: String
+    description: String
+    thumb: String
+    weekly: Weekly
+    daily: Daily
+    sources: Sources
+    resources: Resources
+    resourceId: ID
+    id: ID
+  }
+
   type Weekly {
     boards: [Board]
   }
@@ -100,7 +112,7 @@ const typeDefs = gql`
   type ProjectModifiedCreatedInput {
     success: Boolean!
     message: String
-    data: Project
+    data: updatedProjectResponse
   }
 `;
 

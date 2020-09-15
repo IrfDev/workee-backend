@@ -103,11 +103,6 @@ const resolvers = {
 
     pullInProject: async (_, { id, target, resourceId }, ctx) => {
       if (!ctx.projects) throw new AuthenticationError('Unauthorized!');
-      console.log('[Inside PullInProject resolver]', {
-        id,
-        target,
-        resourceId,
-      });
 
       try {
         const projectUpdated = await ctx.projects.usecases.pullIds({
@@ -115,11 +110,11 @@ const resolvers = {
           resourceId,
           target,
         });
-
+        console.log('[ProjectUpdatedResponse]', projectUpdated);
         return {
           success: true,
           message: `Project updated ${projectUpdated}`,
-          data: projectUpdated,
+          data: { ...projectUpdated, resourceId, id: projectUpdated._id + '' },
         };
       } catch (error) {
         console.log(error);
