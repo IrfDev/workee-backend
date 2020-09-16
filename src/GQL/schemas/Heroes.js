@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server-express');
 
-const typeDefs = gql `
+const typeDefs = gql`
   type Heroe {
     name: String
     tags: [String]
@@ -22,8 +22,11 @@ const typeDefs = gql `
 
   extend type Mutation {
     updateHeroe(input: UpdateHeroeInput): HeroeModifiedCreatedInput
+
     createHeroe(input: createHeroeInput): HeroeModifiedCreatedInput
+
     pushTagsInHeroe(id: ID!, tags: [String!]): HeroeModifiedCreatedInput
+
     pullTagsFromHeroe(id: ID!, tags: [String!]): HeroeModifiedCreatedInput
   }
 
