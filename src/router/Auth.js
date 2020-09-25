@@ -7,8 +7,8 @@ router.get('/signin', (req, res, next) => {
     response: res,
     failureRedirect: '/',
     failureFlash: true,
-    //successRedirect: 'https://workee.site',
-    successRedirect: 'http://localhost:3000',
+    successRedirect: 'https://workee.site',
+    //successRedirect: 'http://localhost:3000',
   })(req, res, next);
 });
 
@@ -17,8 +17,8 @@ router.post('/callback', (req, res, next) => {
     response: res,
     failureRedirect: '/',
     failureFlash: true,
-    //successRedirect: 'https://workee.site',
-    successRedirect: 'http://localhost:3000',
+    successRedirect: 'https://workee.site',
+    //successRedirect: 'http://localhost:3000',
   })(req, res, next);
 });
 
